@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: ons okt 21, 2020  06:36
+- Last modified: ons okt 21, 2020  06:50
 - Sign: Johan Nylander
 
 ## File `vimrc`
@@ -15,11 +15,11 @@
    For example:
 
        git clone https://github.com/vim-scripts/taglist.vim.git \
-                  ~/.vim/vimrc/pack/plugins/start/taglist.vim
+                  ~/.vim/pack/plugins/start/taglist.vim
 
 2. Open `vim` and execute
 
-        :helptags ~/.vim/vimrc/pack/plugins/start/taglist.vim
+        :helptags ~/.vim/pack/plugins/start/taglist.vim
 
 If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
 not loaded at runtime but can be added by using the command `:packadd foo`.
@@ -61,5 +61,6 @@ Sources:
 
     cd ~/Documents/Projects/GIT/vim/pack/plugins/opt/
     git clone https://github.com/johngrib/vim-game-code-break.git
+
 
 
