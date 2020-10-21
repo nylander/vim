@@ -1,15 +1,15 @@
-# My `.vim` folder
+# My .vim folder
 
-- Last modified: ons okt 21, 2020  05:06
+- Last modified: ons okt 21, 2020  05:39
 - Sign: Johan Nylander
 
-## File `.vimrc`
+## File `vimrc`
 
 `~/.vimrc` is a symbolic link to `~/.vim/vimrc`.
 
 ## Additions and plugins
 
-1. Clone a plugin directory in `~/.vim/vimrc/pack/plugins/start` or in
+1. Clone a plugin directory in `~/.vim/vimrc/pack/plugins/start`, or in
    `~/.vim/vimrc/pack/plugins/opt`.
 
    For example:
@@ -25,6 +25,9 @@ If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
 not loaded at runtime but can be added by using the command `:packadd foo`.
 
 ## Current file structure
+
+Note, not all files are under version control in this repository.
+Stable plugins may be added as git submodules later.
 
     .
     ├── pack
