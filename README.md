@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: ons okt 21, 2020  05:39
+- Last modified: ons okt 21, 2020  06:36
 - Sign: Johan Nylander
 
 ## File `vimrc`
@@ -46,4 +46,20 @@ Stable plugins may be added as git submodules later.
     │           └── vimwiki
     ├── README.md
     └── vimrc
+
+Sources:
+
+    cd ~/Documents/Projects/GIT/vim/pack/plugins/start/
+    git clone https://github.com/chrisbra/csv.vim.git
+    git clone https://github.com/suan/vim-instant-markdown.git
+    git clone https://github.com/ivan-krukov/vim-snakemake.git
+    git clone https://github.com/vim-scripts/sketch.vim.git
+    git clone https://github.com/Maxlufs/LargeFile.vim.git
+    git clone https://github.com/vim-scripts/taglist.vim.git
+    git clone https://github.com/aperezdc/vim-template.git
+    git clone https://github.com/vim-scripts/vimwiki.git
+
+    cd ~/Documents/Projects/GIT/vim/pack/plugins/opt/
+    git clone https://github.com/johngrib/vim-game-code-break.git
+
 
