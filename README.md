@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: ons okt 21, 2020  08:04
+- Last modified: ons okt 21, 2020  08:12
 - Sign: Johan Nylander
 
 ## File `vimrc`
@@ -26,9 +26,6 @@ not loaded at runtime but can be added by using the command `:packadd foo`.
 
 ## Current file structure
 
-Note, not all files are under version control in this repository.
-Stable plugins may be added as git submodules later.
-
     .
     ├── pack
     │   └── plugins
@@ -47,25 +44,11 @@ Stable plugins may be added as git submodules later.
     ├── README.md
     └── vimrc
 
-Sources:
 
-    cd ~/Documents/Projects/GIT/vim/pack/plugins/start/
-    git clone https://github.com/chrisbra/csv.vim.git
-    git clone https://github.com/suan/vim-instant-markdown.git
-    git clone https://github.com/ivan-krukov/vim-snakemake.git
-    git clone https://github.com/vim-scripts/sketch.vim.git
-    git clone https://github.com/Maxlufs/LargeFile.vim.git
-    git clone https://github.com/vim-scripts/taglist.vim.git
-    git clone https://github.com/aperezdc/vim-template.git
-    git clone https://github.com/vim-scripts/vimwiki.git
-
-    cd ~/Documents/Projects/GIT/vim/pack/plugins/opt/
-    git clone https://github.com/johngrib/vim-game-code-break.git
-
-<https://gist.github.com/manasthakur/d4dc9a610884c60d944a4dd97f0b3560>
 
 Add submodules
 
+    mkdir -p pack/plugins/{start,opt}
     git submodule add https://github.com/chrisbra/csv.vim.git pack/plugins/start/csv.vim
     git submodule add https://github.com/suan/vim-instant-markdown.git pack/plugins/start/vim-instant-markdown
     git submodule add https://github.com/ivan-krukov/vim-snakemake.git pack/plugins/start/vim-snakemake
@@ -84,16 +67,21 @@ Remove submodule
 
 ## Replicating the repository on a machine
 
-Clone the repository (recursively to clone plugins as well):
+1. Clone the repository (recursively to clone plugins as well):
 
-    git clone --recursive https://github.com/username/reponame.git
+        git clone --recursive https://github.com/nylander/vim.git
 
-Symlink .vim and .vimrc:
+2. Generate helptags for plugins:
 
-    ln -sf reponame ~/.vim
-    ln -sf reponame/vimrc ~/.vimrc
+        vim
+        :helptags ALL
 
-Generate helptags for plugins:
+2. Symlink .vim and .vimrc:
 
-    vim
-    :helptags ALL
+        ln -sf vim ~/.vim
+        ln -sf vim/vimrc ~/.vimrc
+
+### Links
+
+- <https://gist.github.com/manasthakur/d4dc9a610884c60d944a4dd97f0b3560>
+
