@@ -1,0 +1,27 @@
+[submodule "pack/plugins/start/csv.vim"]
+	path = pack/plugins/start/csv.vim
+	url = https://github.com/chrisbra/csv.vim.git
+[submodule "pack/plugins/start/vim-instant-markdown"]
+	path = pack/plugins/start/vim-instant-markdown
+	url = https://github.com/suan/vim-instant-markdown.git
+[submodule "pack/plugins/start/vim-snakemake"]
+	path = pack/plugins/start/vim-snakemake
+	url = https://github.com/ivan-krukov/vim-snakemake.git
+[submodule "pack/plugins/start/sketch.vim"]
+	path = pack/plugins/start/sketch.vim
+	url = https://github.com/vim-scripts/sketch.vim.git
+[submodule "pack/plugins/start/LargeFile.vim"]
+	path = pack/plugins/start/LargeFile.vim
+	url = https://github.com/Maxlufs/LargeFile.vim.git
+[submodule "pack/plugins/start/taglist.vim"]
+	path = pack/plugins/start/taglist.vim
+	url = https://github.com/vim-scripts/taglist.vim.git
+[submodule "pack/plugins/start/vim-template"]
+	path = pack/plugins/start/vim-template
+	url = https://github.com/aperezdc/vim-template.git
+[submodule "pack/plugins/start/vimwiki"]
+	path = pack/plugins/start/vimwiki
+	url = https://github.com/vim-scripts/vimwiki.git
+[submodule "pack/plugins/opt/vim-game-code-break"]
+	path = pack/plugins/opt/vim-game-code-break
+	url = https://github.com/johngrib/vim-game-code-break.git
