@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: ons okt 21, 2020  05:16
+"" Last modified: tis okt 27, 2020  03:38
 ""
 "" Sign: Johan Nylander
 ""
@@ -1045,8 +1045,8 @@ function MyHelp()
     echo "Ctrl+V j $ A TEXT ESC"
     echo " "
 
-    echo "#Display relative line numbers in vim v. < 7.3"
-    echo ":RltNmbr"
+    echo "#Display relative line numbers in vim"
+    echo ":set relativenumber"
     echo
 
     echo "#For insertion of random DNA sequence of length n:"
