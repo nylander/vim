@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tis okt 27, 2020  03:38
+"" Last modified: fre nov 06, 2020  01:28
 ""
 "" Sign: Johan Nylander
 ""
@@ -909,6 +909,12 @@ vnoremap <silent> <Leader>a :Align<CR>
 "" Change case
 vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 
+""===========================================================================
+"" Add to Syntax Menu
+""===========================================================================
+"" Markown to PDF conversion using external wrapper to pandoc
+menu Syntax.-Sep-       :
+menu Syntax.Markdown\ to\ PDF :!md2pdf % <CR><CR>
 
 ""===========================================================================
 "" PHYLO MENU (experimental)
