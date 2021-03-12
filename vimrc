@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor dec 03, 2020  03:21
+"" Last modified: fre mar 12, 2021  01:49
 ""
 "" Sign: Johan Nylander
 ""

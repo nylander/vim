@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: ons okt 21, 2020  08:12
+- Last modified: fre mar 12, 2021  01:40
 - Sign: Johan Nylander
 
 ## File `vimrc`
@@ -24,6 +24,12 @@
 If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
 not loaded at runtime but can be added by using the command `:packadd foo`.
 
+- Remove submodule
+
+    git submodule deinit pack/plugins/start/foo
+    git rm -r pack/plugins/start/foo
+    rm -rf .git/modules/pack/plugins/start/foo
+
 ## Current file structure
 
     .
@@ -44,9 +50,7 @@ not loaded at runtime but can be added by using the command `:packadd foo`.
     ├── README.md
     └── vimrc
 
-
-
-Add submodules
+Submodules added
 
     mkdir -p pack/plugins/{start,opt}
     git submodule add https://github.com/chrisbra/csv.vim.git pack/plugins/start/csv.vim
@@ -59,27 +63,29 @@ Add submodules
     git submodule add https://github.com/vim-scripts/vimwiki.git pack/plugins/start/vimwiki
     git submodule add https://github.com/johngrib/vim-game-code-break.git pack/plugins/opt/vim-game-code-break
 
-Remove submodule
-
-    git submodule deinit pack/plugins/start/foo
-    git rm -r pack/plugins/start/foo
-    rm -r .git/modules/pack/plugins/start/foo
-
 ## Replicating the repository on a machine
 
-1. Clone the repository (recursively to clone plugins as well):
+1. Install prerequisites
+
+        sudo apt install vim-gui-common exuberant-ctags
+
+2. Clone the repository (recursively to clone plugins as well):
 
         git clone --recursive https://github.com/nylander/vim.git
 
-2. Generate helptags for plugins:
+3. Generate helptags for plugins:
 
         vim
         :helptags ALL
 
-2. Symlink .vim and .vimrc:
+4. Symlink .vim and .vimrc:
 
         ln -sf vim ~/.vim
         ln -sf vim/vimrc ~/.vimrc
+
+## TODO
+
+Track local changes made in submodules.
 
 ### Links
 
