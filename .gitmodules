@@ -16,9 +16,6 @@
 [submodule "pack/plugins/start/taglist.vim"]
 	path = pack/plugins/start/taglist.vim
 	url = https://github.com/vim-scripts/taglist.vim.git
-[submodule "pack/plugins/start/vim-template"]
-	path = pack/plugins/start/vim-template
-	url = https://github.com/aperezdc/vim-template.git
 [submodule "pack/plugins/start/vimwiki"]
 	path = pack/plugins/start/vimwiki
 	url = https://github.com/vim-scripts/vimwiki.git
