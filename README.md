@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tis nov 23, 2021  11:31
+- Last modified: tis nov 23, 2021  12:21
 - Sign: Johan Nylander
 
 ---
@@ -109,8 +109,8 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
 4. Symlink to .vim and .vimrc:
 
-        ln -sf vim $HOME/.vim
-        ln -sf vim/vimrc $HOME/.vimrc
+        ln -sf $PWD/vim $HOME/.vim
+        ln -sf $PWD/vim/vimrc $HOME/.vimrc
 
 ## TODO
 
