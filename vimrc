@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor mar 30, 2023  04:09
+"" Last modified: tor mar 30, 2023  04:11
 ""
 "" Sign: Johan Nylander
 ""
@@ -49,16 +49,16 @@
 ""
 "" 1. Clone a plugin directory in `~/.vim/vimrc/pack/plugins/start` or in
 ""    `~/.vim/vimrc/pack/plugins/opt`.
-"" 
+""
 ""    For example:
-"" 
+""
 ""        git clone https://github.com/vim-scripts/taglist.vim.git \
 ""                   ~/.vim/vimrc/pack/plugins/start/taglist.vim
-"" 
+""
 "" 2. Open `vim` and execute
-"" 
+""
 ""         :helptags ~/.vim/vimrc/pack/plugins/start/taglist.vim
-"" 
+""
 "" If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
 "" not loaded at runtime but can be added by using the command `:packadd foo`.
 ""
@@ -84,7 +84,7 @@ autocmd FileType make setlocal noexpandtab                    "   but not if edi
 set matchpairs+=<:>                                           " Add <> as match pairs (default "(:),{:},[:]")
 set nocompatible                                              " For vimwiki
 "set cursorline cursorcolumn                                  " Highlight current line/column
-set ruler                                                     " Show the line and column number of the cursor position.   
+set ruler                                                     " Show the line and column number of the cursor position.
 set backspace=indent,eol,start                                " Backspace behavior.
 set foldmethod=indent                                         " Enable folding on indentation. Use zo, zc, zM, zR to open/close.
 set foldminlines=0                                            " Fold also single lines.
@@ -167,7 +167,7 @@ function! PrintPdf()
     echo "printing current file to PDF"
     exe 'set popt=header:0'
     exe ':hardcopy > ' . utfil
-    exe ':!ps2pdf ' . utfil 
+    exe ':!ps2pdf ' . utfil
 endfunction
 
 "" Print buffer to postscript
@@ -205,14 +205,14 @@ endfunction
 "" WARNING: does not work well on large (long sequences) files!
 "function! Fasta2NonInterLeavedFasta()
 "    exe ':g/^>/s/\(^>.*\)/\1@/'
-"    exe ':%s/\n//' 
+"    exe ':%s/\n//'
 "    exe ':s/@/\r/g'
 "    exe ':g!/^>/s/>/\r>/g'
 "    echo ''
 "endfunction
 function! Fasta2NonInterLeavedFasta()
     exe ':%g/^>/s/\(^>.*\)/\1@/'
-    exe ':%g!/^>/-1join' 
+    exe ':%g!/^>/-1join'
     exe ':%s/@/\r/g'
     exe ':%g!/^>/s/ //g'
     echo ''
@@ -256,7 +256,7 @@ function! Fasta2Phyml()
     exe ':%Align'
     exe ':normal gg'
     exe "normal i" ntax nchar "\<Esc>"
-    "echo "Ntax: " ntax "Nchar: " nchar 
+    "echo "Ntax: " ntax "Nchar: " nchar
 endfunction
 
 ""  RandSeq: generate random (P(A)=P(C)=P(G)=P(T)=0.25) DNA sequence
@@ -376,7 +376,7 @@ function LC()
     echo strlen(@") . " characters in word"
 endfunction
 
-"" Print the position in word under cursor 
+"" Print the position in word under cursor
 function PC()
     normal yiB
     echo strlen(@") . " position in word"
@@ -397,8 +397,8 @@ endfunction
 "" Count A, C, G, and T's on a line
 "" This function counts the AT and GC on the WHOLE line (and only one line)
 "" It reports the AT/GC contents and the calculated Tm based on 4*GC+2*AT
-"" Alexandru Tudor Constantinescu, 12/14/2004 
-function! Count_bases() 
+"" Alexandru Tudor Constantinescu, 12/14/2004
+function! Count_bases()
     let l:string_length = strlen(substitute(getline("."), ".*", "&", "g"))
     let l:a = l:string_length - strlen(substitute(getline("."), "\\c[a]", "", "g"))
     let l:c = l:string_length - strlen(substitute(getline("."), "\\c[c]", "", "g"))
@@ -416,7 +416,7 @@ endfunction
 " capitalization does not get screwed up
 " at this moment 12/07/2004, the whole LINE (i.e. not only part of line) gets
 " changed, irrespective of what you select.
-" Tim Chase and William Nater 12/12/2004 
+" Tim Chase and William Nater 12/12/2004
 " since ignorecase gives problems (i.e. capitalization is lost)
 " The replacement should be done by selecting a block of text (beware that the
 " WHOLE line will get changed!!) and then issuing the commmand:
@@ -449,8 +449,8 @@ function! ShowSeqPos()
     let mycolumn = col(".")
     let [lnum, seqstart] = searchpos('\s', 'bcn')
     let seqpos = mycolumn - seqstart
-    if seqpos < 1 
-        let seqpos = ''  
+    if seqpos < 1
+        let seqpos = ''
     endif
     return seqpos
 endfunction
@@ -476,7 +476,7 @@ function! CComment()
     endif
 endfunction
 
-"" Nexus-Comment/uncomment 
+"" Nexus-Comment/uncomment
 "" Works on line-by-line basis only
 function! NexusComment()
     if getline(".") =~ '['
@@ -492,7 +492,7 @@ function! NexusComment()
     endif
 endfunction
 
-"" Perl-Comment/uncomment 
+"" Perl-Comment/uncomment
 function! PerlComment()
     if getline(".") =~ '^\s*#'
         let hls=@/
@@ -505,7 +505,7 @@ function! PerlComment()
     endif
 endfunction
 
-"" LaTeX-Comment/uncomment 
+"" LaTeX-Comment/uncomment
 function! LaTeXComment()
     if getline(".") =~ '%'
         let hls=@/
@@ -529,7 +529,7 @@ func Stuff(str,justif,fillchar,len)
     let left_or_right = a:justif
     let fillch=a:fillchar
     while intendedlen > strlen(out)
-        if left_or_right > 0 
+        if left_or_right > 0
             let out = out . fillch
         else
             let out = fillch . out
@@ -758,7 +758,7 @@ let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 
 "" Read PDF files in vim
 autocmd BufReadPre *.pdf set ro
-autocmd BufReadPost *.pdf %!pdftotext -nopgbrk "%" - 
+autocmd BufReadPost *.pdf %!pdftotext -nopgbrk "%" -
 
 "" Allow editing of compressed files
 "" http://www.ashberg.de/vim/vimrc.html
@@ -832,7 +832,7 @@ map M :%s//\r/g
 " map _c :s/^/# /<CR>
 " map _u :s/^# //<CR>
 
-"" Map F4 to TagList on/off 
+"" Map F4 to TagList on/off
 nnoremap <silent> <F4> :TlistToggle<CR>
 
 "" Map the F12 key to Sketch on/off
@@ -854,7 +854,7 @@ imap <C-S> <Esc>:w<CR>i
 
 "" Search for occurence of selected text by pressing '/' in visual mode
 "" See function below for an alternative using forward and backward search
-vmap / y/<C-R>"<CR> 
+vmap / y/<C-R>"<CR>
 
 "" A function to save word under cursor to a file
 " map ,p :call SaveWord()
@@ -862,7 +862,7 @@ vmap / y/<C-R>"<CR>
 "" Count letters in the word under the cursor
 map zz :call LC()<CR>
 
-"" Print the position in word under cursor 
+"" Print the position in word under cursor
 "map zz:call PC()<CR>
 
 "" Count letters in the line under the cursor, v.2
@@ -878,15 +878,15 @@ map ZZ :call Count_bases()<CR>
 map ö :call CComment()<CR>
 map ,/ :call CComment()<CR>
 
-"" Nexus-Comment/uncomment 
+"" Nexus-Comment/uncomment
 map å :call NexusComment()<CR>
 map ,[ :call NexusComment()<CR>
 
-"" Perl-Comment/uncomment 
+"" Perl-Comment/uncomment
 map ä :call PerlComment()<CR>
 map ,. :call PerlComment()<CR>
 
-"" LaTeX-Comment/uncomment 
+"" LaTeX-Comment/uncomment
 "map ' :call LaTeXComment()<CR>
 
 "" VisualSearch
