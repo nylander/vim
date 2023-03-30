@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: fre mar 12, 2021  01:49
+"" Last modified: fre okt 14, 2022  02:10
 ""
 "" Sign: Johan Nylander
 ""
@@ -103,7 +103,7 @@ set foldenable!                                               " Fold by default.
 "" GUI SETTINGS
 ""===========================================================================
 
-set guifont=DejaVu\ Sans\ Mono\ 10                  " On awesome laptop.
+set guifont=DejaVu\ Sans\ Mono\ 8                  " On desktop.
 "set guifont=DejaVu\ Sans\ Mono\ 20                 " For teaching.
 "set guifont=Monospace\ 10                          " On awesome laptop.
 "set guifont=Monospace\ 20                          " For teaching.
@@ -112,19 +112,19 @@ set guioptions+=b                                   " GUI bottom scrollbar
 set guioptions-=T                                   " No toolbar in GUI
 
 "" Set default size for GUI window
-"if has("gui_running")
-"  "" GUI is running or is about to start.
-"  "" Maximize gvim window.
-"  set lines=40 columns=150
-"else
-"  "" This is console Vim.
-"  if exists("+lines")
-"    set lines=30
-"  endif
-"  if exists("+columns")
-"    set columns=100
-"  endif
-"endif
+if has("gui_running")
+  "" GUI is running or is about to start.
+  "" Maximize gvim window.
+  set lines=40 columns=150
+else
+  "" This is console Vim.
+  if exists("+lines")
+    set lines=30
+  endif
+  if exists("+columns")
+    set columns=100
+  endif
+endif
 
 
 ""===========================================================================
