@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tis nov 23, 2021  12:21
+- Last modified: tor mar 30, 2023  04:56
 - Sign: Johan Nylander
 
 ---
@@ -80,7 +80,7 @@ not loaded at runtime but can be added by using the command `:packadd foo`.
     git submodule add https://github.com/vim-scripts/sketch.vim.git pack/plugins/start/sketch.vim
     git submodule add https://github.com/Maxlufs/LargeFile.vim.git pack/plugins/start/LargeFile.vim
     git submodule add https://github.com/vim-scripts/taglist.vim.git pack/plugins/start/taglist.vim
-    git submodule add https://github.com/aperezdc/vim-template.git pack/plugins/start/vim-template
+    git submodule add https://github.com/nylander/vim-template.git pack/plugins/start/vim-template
     git submodule add https://github.com/vim-scripts/vimwiki.git pack/plugins/start/vimwiki
     git submodule add https://github.com/johngrib/vim-game-code-break.git pack/plugins/opt/vim-game-code-break
 

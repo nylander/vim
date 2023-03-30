@@ -22,3 +22,6 @@
 [submodule "pack/plugins/opt/vim-game-code-break"]
 	path = pack/plugins/opt/vim-game-code-break
 	url = https://github.com/johngrib/vim-game-code-break.git
+[submodule "pack/plugins/start/vim-template"]
+	path = pack/plugins/start/vim-template
+	url = https://github.com/nylander/vim-template.git
