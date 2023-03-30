@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor mar 30, 2023  04:02
+"" Last modified: tor mar 30, 2023  04:04
 ""
 "" Sign: Johan Nylander
 ""
@@ -833,15 +833,6 @@ map M :%s//\r/g
 " map _c :s/^/# /<CR>
 " map _u :s/^# //<CR>
 
-"" Remap the help F1 key:
-"" The original function of <F1> can be obtained with <F1><Enter>
-"nnoremap <F1> :help<Space>
-"Johans re-map:
-nnoremap <F1> :call MyHelp()<CR>
-vmap <F1> <C-C><F1>
-omap <F1> <C-C><F1>
-map! <F1> <C-C><F1>
-
 "" Map F4 to TagList on/off 
 nnoremap <silent> <F4> :TlistToggle<CR>
 
@@ -979,138 +970,4 @@ menu Phylo.Run.MrAIC\ (24\ nt\ models) : ! mraic.pl %<CR><CR>: tabe *.MrAIC.txt<
 menu Phylo.Run.MrAIC\ (56\ nt\ models) : ! mraic.pl -modeltest %<CR><CR>: tabe *.MrAIC.txt<CR>
 menu Phylo.Run.pMrAIC\ (24\ nt\ models) : ! pmraic.pl --noverbose %<CR><CR>: tabe *.pMrAIC.txt<CR>
 menu Phylo.Run.pMrAIC\ (56\ nt\ models) : ! pmraic.pl --noverbose --modeltest %<CR><CR>: tabe *.pMrAIC.txt<CR>
-
-
-""===========================================================================
-"" HELP
-""===========================================================================
-function MyHelp()
-
-    echo "#For Perl-like regular expressions:"
-    echo ":perlod s/search/replace/"
-    echo " "
-
-    echo "#Count occurrence of word:"
-    echo ":%s/word//gn"
-    echo "#or:"
-    echo ": w !wc"
-    echo " "
-
-    echo "#Count printed words in TeX file (needs detex):"
-    echo ":w !detex \| wc -w"
-    echo " "
-
-    echo "#For search and replace in visual selection"
-    echo ":%s/\%Vsearch_pattern/replace_pattern/g"
-    echo ":s/\%Vsearch_pattern/replace_pattern/g"
-    echo ""
-
-    echo "#CSV files (first, make sure filetype is set to csv)"
-    echo "#Search for foo in column 3"
-    echo ":SC 3=foo"
-    echo "#Highlight column 3"
-    echo ":Csv 3"
-    echo "#Delete column 3"
-    echo ":DC 3 "
-    echo "#Change delimiter"
-    echo ":Delimiter \t"
-    echo " "
-
-    echo "#For file type templates:"
-    echo "TT <file>, TH <file>, TLS : "
-    echo " "
-
-    echo "#Show a list of all occurences of TEXT with line numbers"
-    echo ":g/TEXT/#"
-    echo " "
-
-    echo "#Display all lines FRED but not FREDDY"
-    echo ":g/\\<FRED\\>/"
-    echo " "
-
-    echo "#Delete all empty lines, or lines with only blanks"
-    echo ":v/\\S/d"
-    echo " "
-
-    echo "#Duplicate every line"
-    echo ":g/^/t."
-    echo " "
-
-    echo "#Delete every other line"
-    echo ":%norm jdd"
-    echo " "
-
-    echo "#Add/subtract one from number under cursor"
-    echo "CTRL+A/CTRL+X"
-    echo
-
-    echo "#For drawing functions:"
-    echo ":call ToggleSketch()  or Press F12!"
-    echo " "
-
-    echo "#Insert TEXT after every line"
-    echo "Ctrl+V j $ A TEXT ESC"
-    echo " "
-
-    echo "#Display relative line numbers in vim"
-    echo ":set relativenumber"
-    echo
-
-    echo "#For insertion of random DNA sequence of length n:"
-    echo ":call RandSeq(n)"
-    echo " "
-
-    echo "#For running an external cmd on the current file (e.g.):"
-    echo ":! paup %"
-    echo " "
-    echo "#To insert result from external cmd (e.g.):"
-    echo ":r!/home/nylander/bin/getrandomsequence.pl "
-    echo " "
-
-    echo "#For counting characters/words:"
-    echo "zz, ZZ, zx"
-    echo ":!wc -w < %"
-    echo "#VISUAL mode (select area and): "
-    echo "gCTRL+G "
-    echo ":%s/search_for_this/&/gn "
-    echo ":%s/\S/&/gn "
-    echo " "
-
-    echo "#For a IDE-like environment"
-    echo ":Tlist   or press F4!"
-    echo " "
-
-    echo "#For commenting/uncommenting:"
-    echo "å  or ä or ö or ' or "
-    echo " "
-
-    echo "#For write-completion: in insert mode, start typing then press"
-    echo "Ctrl-n"
-    echo " "
-
-    echo "#For quick-save:"
-    echo "Ctrl-s"
-    echo " "
-
-    echo "#For smart selection:"
-    echo "Ctrl+v ab  Select \"a block\" from \"[(\" to \"])\", including braces"
-    echo "Ctrl+v ib  Select \"inner block\" from \"[(\" to \"])\""
-    echo "Ctrl+v aB  Select \"a block\" from \"[{\" to \"]}\", including brackets"
-    echo "Ctrl+v iB  Select \"inner block\" from \"[{\" to \"]}\""
-    echo " "
-
-    echo "#For going to global/local definition of variables:"
-    echo "gd   Go to Declaration of local variable under cursor."
-    echo "gD   Go to Declaration of global variable under cursor."
-    echo " "
-
-    echo "#For folds:"
-    echo "Use zo, zc, zM, zR to open/close"
-    echo " "
-
-    echo "#For a calendar"
-    echo ":Calendar"
-    echo " "
-
-endfunction
 
