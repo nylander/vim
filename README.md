@@ -1,11 +1,12 @@
 # My .vim folder
 
-- Last modified: tor mar 30, 2023  04:56
+- Last modified: tor mar 30, 2023  05:05
 - Sign: Johan Nylander
 
 ---
 
-*Vim isn't an editor designed to hold its users' hands. It is a tool, the use of which must be learned.*
+*Vim isn't an editor designed to hold its users' hands. It is a tool, the use
+of which must be learned.*
 
 ---Bram Moolenaar (author of vim)
 
@@ -13,8 +14,9 @@
 
 ## Description
 
-Reasonable setup for efficient work with the [vim editor](https://www.vim.org/).
-In particular, I use settings for the "graphical vim" (`gvim`).
+Reasonable setup for efficient work with the [vim
+editor](https://www.vim.org/).  In particular, I use settings for the
+"graphical vim" (`gvim`).
 
 #### Current file structure
 
@@ -37,7 +39,8 @@ In particular, I use settings for the "graphical vim" (`gvim`).
        └── vimrc
 
 
-To setup on a new machine, see the [Replication... section below](#replicating-the-repository-on-a-new-machine)
+To setup on a new machine, see the [Replication... section
+below](#replicating-the-repository-on-a-new-machine)
 
 ## Some notes
 
@@ -52,7 +55,7 @@ To setup on a new machine, see the [Replication... section below](#replicating-t
 
    For example:
 
-       git clone https://github.com/vim-scripts/taglist.vim.git \
+       $ git clone https://github.com/vim-scripts/taglist.vim.git \
                   ~/.vim/pack/plugins/start/taglist.vim
 
 2. Open `vim` and execute
@@ -64,9 +67,17 @@ not loaded at runtime but can be added by using the command `:packadd foo`.
 
 - Remove submodule
 
-        git submodule deinit pack/plugins/start/foo
-        git rm -r pack/plugins/start/foo
-        rm -rf .git/modules/pack/plugins/start/foo
+        $ git submodule deinit pack/plugins/start/foo
+        $ git rm -r pack/plugins/start/foo
+        $ rm -rf .git/modules/pack/plugins/start/foo
+
+- Update submodules
+
+        $ git submodule update --remote --merge
+
+Then add and commit any new changes, followed by push.  If I need to make
+changes in submodule files, I do it from my own fork of the submodule (adding
+submodule as examples below).
 
 #### Submodules used
 
@@ -96,25 +107,22 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
 1. Install prerequisites
 
-        sudo apt install vim-gui-common exuberant-ctags
+        $ sudo apt install vim-gui-common exuberant-ctags
 
 2. Clone the repository (recursively to clone plugins as well).
 
-        git clone --recursive https://github.com/nylander/vim.git
+        $ git clone --recursive https://github.com/nylander/vim.git
 
 3. Generate helptags for plugins:
 
-        vim
+        $ vim
         :helptags ALL
 
 4. Symlink to .vim and .vimrc:
 
-        ln -sf $PWD/vim $HOME/.vim
-        ln -sf $PWD/vim/vimrc $HOME/.vimrc
+        $ ln -sf $PWD/vim $HOME/.vim
+        $ ln -sf $PWD/vim/vimrc $HOME/.vimrc
 
-## TODO
-
-Track local changes made in submodules.
 
 ### Links
 
