@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor mar 30, 2023  04:04
+"" Last modified: tor mar 30, 2023  04:09
 ""
 "" Sign: Johan Nylander
 ""
@@ -113,17 +113,17 @@ set guioptions-=T                                   " No toolbar in GUI
 
 "" Set default size for GUI window
 if has("gui_running")
-  "" GUI is running or is about to start.
-  "" Maximize gvim window.
-  set lines=40 columns=150
+    "" GUI is running or is about to start.
+    "" Maximize gvim window.
+    set lines=40 columns=150
 else
-  "" This is console Vim.
-  if exists("+lines")
-    set lines=30
-  endif
-  if exists("+columns")
-    set columns=100
-  endif
+    "" This is console Vim.
+    if exists("+lines")
+        set lines=30
+    endif
+    if exists("+columns")
+        set columns=100
+    endif
 endif
 
 
@@ -150,14 +150,14 @@ endfunction
 """ Restores cursor and window position using save_cursor variable.
 "" TODO: manipulate lang: lan tim en_US.UTF-8
 function! LastModified()
-  if &modified
-    let save_cursor = getpos(".")
-    let n = min([20, line("$")])
-    keepjumps exe '1,' . n . 's#^\(.\{,10}Last modified: \).*#\1' .
+    if &modified
+        let save_cursor = getpos(".")
+        let n = min([20, line("$")])
+        keepjumps exe '1,' . n . 's#^\(.\{,10}Last modified: \).*#\1' .
           \ strftime('%a %b %d, %Y  %I:%M%p') . '#e'
-    call histdel('search', -1)
-    call setpos('.', save_cursor)
-  endif
+        call histdel('search', -1)
+        call setpos('.', save_cursor)
+    endif
 endfun
 
 "" Print buffer to PDF and postscript
@@ -372,20 +372,20 @@ endfunction
 
 "" Count letters in the word under the cursor
 function LC()
-  normal yiW
-  echo strlen(@") . " characters in word"
+    normal yiW
+    echo strlen(@") . " characters in word"
 endfunction
 
 "" Print the position in word under cursor 
 function PC()
-  normal yiB
-  echo strlen(@") . " position in word"
+    normal yiB
+    echo strlen(@") . " position in word"
 endfunction
 
 "" Count letters in the line under the cursor, v.2
 function LC2()
-  let string_length = strlen(substitute(getline("."), ".*", "&", "g"))
-  echo string_length . " characters in line"
+    let string_length = strlen(substitute(getline("."), ".*", "&", "g"))
+    echo string_length . " characters in line"
 endfunction
 
 "" Count words in the line under the cursor, v.3
@@ -399,14 +399,14 @@ endfunction
 "" It reports the AT/GC contents and the calculated Tm based on 4*GC+2*AT
 "" Alexandru Tudor Constantinescu, 12/14/2004 
 function! Count_bases() 
-   let l:string_length = strlen(substitute(getline("."), ".*", "&", "g"))
-   let l:a = l:string_length - strlen(substitute(getline("."), "\\c[a]", "", "g"))
-   let l:c = l:string_length - strlen(substitute(getline("."), "\\c[c]", "", "g"))
-   let l:g = l:string_length - strlen(substitute(getline("."), "\\c[g]", "", "g"))
-   let l:t = l:string_length - strlen(substitute(getline("."), "\\c[t]", "", "g"))
-   let l:gap = l:string_length - strlen(substitute(getline("."), "\\c[-]", "", "g"))
-   let l:other = l:string_length - l:a - l:c - l:g - l:t - l:gap
-   echo "Length=" . l:string_length " (" "A=" . l:a "C=" . l:c "G=" . l:g "T=" . l:t "-=" . l:gap "other=" . l:other ")"
+    let l:string_length = strlen(substitute(getline("."), ".*", "&", "g"))
+    let l:a = l:string_length - strlen(substitute(getline("."), "\\c[a]", "", "g"))
+    let l:c = l:string_length - strlen(substitute(getline("."), "\\c[c]", "", "g"))
+    let l:g = l:string_length - strlen(substitute(getline("."), "\\c[g]", "", "g"))
+    let l:t = l:string_length - strlen(substitute(getline("."), "\\c[t]", "", "g"))
+    let l:gap = l:string_length - strlen(substitute(getline("."), "\\c[-]", "", "g"))
+    let l:other = l:string_length - l:a - l:c - l:g - l:t - l:gap
+    echo "Length=" . l:string_length " (" "A=" . l:a "C=" . l:c "G=" . l:g "T=" . l:t "-=" . l:gap "other=" . l:other ")"
 endfunction
 
 " Get the reverse-complement of a certain DNA sequence
@@ -422,26 +422,26 @@ endfunction
 " WHOLE line will get changed!!) and then issuing the commmand:
 " :RC
 fun! Rev(result)
-   let l:i = strlen(a:result) - 1
-   let l:result = ''
-   while (l:i > -1)
-	  let l:result = l:result.a:result[l:i]
-	  let l:i = l:i - 1
-   endwhile
-   return l:result
-endfun 
+    let l:i = strlen(a:result) - 1
+    let l:result = ''
+    while (l:i > -1)
+        let l:result = l:result.a:result[l:i]
+        let l:i = l:i - 1
+    endwhile
+    return l:result
+endfun
 
 function! RC_Tim(l1, l2)
-   let l:str = getline(a:l1)
-   let l:len = strlen(l:str)
-   let l:ignorecs = &l:ic
-   let &l:ic = 0
-   exe a:l1.",".a:l2."j!"
-   exe a:l1."s/.*/\\=Rev(submatch(0))/"
-   exe a:l1."s/\\c[agct]/\\=\"ATGCatgc\"[match(\"TACGtacg\", submatch(0))]/ge"
-   "exe a:l1."s/.\\{".&tw."\\}\\zs/\\r/g"
-   exe a:l1."s/.\\{".&tw."\\}\\zs//g"
-   let &l:ic = l:ignorecs
+    let l:str = getline(a:l1)
+    let l:len = strlen(l:str)
+    let l:ignorecs = &l:ic
+    let &l:ic = 0
+    exe a:l1.",".a:l2."j!"
+    exe a:l1."s/.*/\\=Rev(submatch(0))/"
+    exe a:l1."s/\\c[agct]/\\=\"ATGCatgc\"[match(\"TACGtacg\", submatch(0))]/ge"
+    "exe a:l1."s/.\\{".&tw."\\}\\zs/\\r/g"
+    exe a:l1."s/.\\{".&tw."\\}\\zs//g"
+    let &l:ic = l:ignorecs
 endfunction
 
 "" Show seq position. Assumes this format: Seqlabel ACGT
@@ -528,7 +528,6 @@ func Stuff(str,justif,fillchar,len)
     let intendedlen  = a:len
     let left_or_right = a:justif
     let fillch=a:fillchar
-
     while intendedlen > strlen(out)
         if left_or_right > 0 
             let out = out . fillch
