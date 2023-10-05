@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: ons apr 12, 2023  10:40
+"" Last modified: tor okt 05, 2023  11:57
 ""
 "" Sign: Johan Nylander
 ""
@@ -38,10 +38,11 @@
 
 "" (from github.com):
 ""
+""     copilot
 ""     vim-pathogen
 ""     vim-template
 ""
-"" My vim stuff can be found on:
+"" My older vim stuff can be found on:
 ""
 ""     www.abc.se/~nylander
 ""
@@ -90,6 +91,7 @@ set foldmethod=indent                                         " Enable folding o
 set foldminlines=0                                            " Fold also single lines.
 set foldenable!                                               " Fold by default.
 "set viminfo='10,\"100,:20,%,n~/.viminfo
+let g:copilot_enabled = v:false                               " Disable copilot by default.
 
 "" Manipulate status line to show seq position.
 "" TODO: This is work in progress.
