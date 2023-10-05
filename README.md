@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tor okt 05, 2023  11:55
+- Last modified: tor okt 05, 2023  12:39
 - Sign: Johan Nylander
 
 ---
@@ -39,10 +39,10 @@ editor](https://www.vim.org/).  In particular, I use settings for the
        └── vimrc
 
 
-To setup on a new machine, see the [Replication... section
-below](#replicating-the-repository-on-a-new-machine)
+To setup on a new machine, see the [Replication...
+section](#replicating-the-repository-on-a-new-machine) below.
 
-## Some notes
+## Notes
 
 ### File `vimrc`
 
@@ -73,7 +73,7 @@ not loaded at runtime but can be added by using the command `:packadd foo`.
 
 - Update submodules
 
-        $ git submodule update --remote --merge
+        $ git submodule update --recursive --remote
 
 Then add and commit any new changes, followed by push.  If I need to make
 changes in submodule files, I do it from my own fork of the submodule (adding
@@ -94,6 +94,7 @@ submodule as examples below).
     git submodule add https://github.com/nylander/vim-template.git pack/plugins/start/vim-template
     git submodule add https://github.com/vim-scripts/vimwiki.git pack/plugins/start/vimwiki
     git submodule add https://github.com/johngrib/vim-game-code-break.git pack/plugins/opt/vim-game-code-break
+    git submodule add https://github.com/github/copilot.vim.git pack/plugins/start/copilot.vim
 
 \normalsize
 
@@ -111,7 +112,7 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
 2. Clone the repository (recursively to clone plugins as well).
 
-        $ git clone --recursive https://github.com/nylander/vim.git
+        $ git clone --recurse-submodules -j8 https://github.com/nylander/vim.git
 
 3. Generate helptags for plugins:
 
