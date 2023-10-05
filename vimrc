@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor okt 05, 2023  11:57
+"" Last modified: tor okt 05, 2023  12:51
 ""
 "" Sign: Johan Nylander
 ""
@@ -91,7 +91,7 @@ set foldmethod=indent                                         " Enable folding o
 set foldminlines=0                                            " Fold also single lines.
 set foldenable!                                               " Fold by default.
 "set viminfo='10,\"100,:20,%,n~/.viminfo
-let g:copilot_enabled = v:false                               " Disable copilot by default.
+let g:copilot_enabled = v:false                               " Disable copilot by default. Enable by :Copilot enable
 
 "" Manipulate status line to show seq position.
 "" TODO: This is work in progress.
