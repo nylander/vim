@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tor mar 30, 2023  05:05
+- Last modified: tor okt 05, 2023  11:55
 - Sign: Johan Nylander
 
 ---
@@ -26,12 +26,12 @@ editor](https://www.vim.org/).  In particular, I use settings for the
        │       ├── opt
        │       │   └── vim-game-code-break
        │       └── start
+       │           ├── copilot.vim
        │           ├── csv.vim
-       │           ├── instant-markdown
        │           ├── LargeFile
-       │           ├── nexus.vim
        │           ├── sketch.vim
        │           ├── taglist.vim
+       │           ├── vim-instant-markdown
        │           ├── vim-snakemake
        │           ├── vim-template
        │           └── vimwiki
@@ -105,7 +105,7 @@ We will clone the vim directory and then symlink to `$HOME/.vim` (and
 `$HOME/.vim/vimrc` to `$HOME/.vimrc`).  One alternative is to clone the repo
 directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
-1. Install prerequisites
+1. Install prerequisites (see also [Update...](#update-to-latest-vim-version-using-ppa) below)
 
         $ sudo apt install vim-gui-common exuberant-ctags
 
@@ -124,7 +124,19 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
         $ ln -sf $PWD/vim/vimrc $HOME/.vimrc
 
 
+## Update to latest vim version using PPA
+
+Oct 2023: Update to vim 9 from PPA:
+
+    $ sudo add-apt-repository ppa:jonathonf/vim
+    $ sudo apt update
+    $ sudo apt install vim
+    $ vim --version
+
+
 ### Links
 
 - <https://gist.github.com/manasthakur/d4dc9a610884c60d944a4dd97f0b3560>
+- <https://itsfoss.com/install-latest-vim-ubuntu/>
+
 
