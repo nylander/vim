@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor okt 05, 2023  12:51
+"" Last modified: tor okt 05, 2023  01:04
 ""
 "" Sign: Johan Nylander
 ""
@@ -29,24 +29,20 @@
 ""
 "" Download and install plug-ins:
 ""
-"" (from www.vim.org):
-""
-""     csv.vim
-""     LargeFile.vim
-""     sketch.vim
-""     vimwiki.vim
-
 "" (from github.com):
 ""
-""     copilot
-""     vim-pathogen
-""     vim-template
+""    LargeFile.vim
+""    copilot.vim
+""    csv.vim
+""    sketch.vim
+""    taglist.vim
+""    vim-game-code-break
+""    vim-instant-markdown
+""    vim-snakemake
+""    vim-template
+""    vimwiki
 ""
-"" My older vim stuff can be found on:
-""
-""     www.abc.se/~nylander
-""
-"" Install using Vim 8's own package manager system:
+"" Install using Vim's own package manager system:
 ""
 "" 1. Clone a plugin directory in `~/.vim/vimrc/pack/plugins/start` or in
 ""    `~/.vim/vimrc/pack/plugins/opt`.
@@ -69,7 +65,6 @@
 "" DEFAULTS
 ""===========================================================================
 
-let g:instant_markdown_autostart = 0
 syntax on                                                     " Enable syntax
 filetype plugin indent on                                     " Enable plugins for filetype
 "set textwidth=100                                            " Maximum width of text that is being inserted (line will be broken).
@@ -91,7 +86,9 @@ set foldmethod=indent                                         " Enable folding o
 set foldminlines=0                                            " Fold also single lines.
 set foldenable!                                               " Fold by default.
 "set viminfo='10,\"100,:20,%,n~/.viminfo
+
 let g:copilot_enabled = v:false                               " Disable copilot by default. Enable by :Copilot enable
+let g:instant_markdown_autostart = 0                          " Disable instant_markdown by default
 
 "" Manipulate status line to show seq position.
 "" TODO: This is work in progress.
