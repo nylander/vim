@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor mar 30, 2023  04:11
+"" Last modified: ons apr 12, 2023  10:40
 ""
 "" Sign: Johan Nylander
 ""
@@ -103,10 +103,10 @@ set foldenable!                                               " Fold by default.
 "" GUI SETTINGS
 ""===========================================================================
 
-set guifont=DejaVu\ Sans\ Mono\ 8                  " On desktop.
+set guifont=DejaVu\ Sans\ Mono\ 9                  " On desktop.
 "set guifont=DejaVu\ Sans\ Mono\ 20                 " For teaching.
-"set guifont=Monospace\ 10                          " On awesome laptop.
 "set guifont=Monospace\ 20                          " For teaching.
+"set guifont=Monospace\ 11                          " On awesome laptop.
 
 set guioptions+=b                                   " GUI bottom scrollbar
 set guioptions-=T                                   " No toolbar in GUI
