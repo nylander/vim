@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tor okt 05, 2023  12:39
+- Last modified: tor jan 25, 2024  10:01
 - Sign: Johan Nylander
 
 ---
@@ -28,7 +28,8 @@ editor](https://www.vim.org/).  In particular, I use settings for the
        │       └── start
        │           ├── copilot.vim
        │           ├── csv.vim
-       │           ├── LargeFile
+       │           ├── editorconfig-vim
+       │           ├── LargeFile.vim
        │           ├── sketch.vim
        │           ├── taglist.vim
        │           ├── vim-instant-markdown
@@ -95,6 +96,7 @@ submodule as examples below).
     git submodule add https://github.com/vim-scripts/vimwiki.git pack/plugins/start/vimwiki
     git submodule add https://github.com/johngrib/vim-game-code-break.git pack/plugins/opt/vim-game-code-break
     git submodule add https://github.com/github/copilot.vim.git pack/plugins/start/copilot.vim
+    git submodule add https://github.com/editorconfig/editorconfig-vim.git pack/plugins/start/editorconfig-vim
 
 \normalsize
 
