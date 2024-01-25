@@ -22,7 +22,7 @@
 
        AUTHOR: %USER%, <%MAIL%>
 
-      COMPANY: NBIS/NRM
+      COMPANY: NRM
 
       VERSION: 0.1
 
