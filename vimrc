@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor okt 05, 2023  01:04
+"" Last modified: sön mar 03, 2024  11:34
 ""
 "" Sign: Johan Nylander
 ""
@@ -898,74 +898,77 @@ vnoremap <silent> <Leader>a :Align<CR>
 "" Change case
 vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 
+
 ""===========================================================================
 "" Add to Syntax Menu
 ""===========================================================================
+
 "" Markown to PDF conversion using external wrappers to pandoc
-menu Syntax.-Sep-       :
-menu Syntax.Markdown\ to\ PDF :!md2pdf % <CR><CR>
-menu Syntax.Markdown\ to\ Beamer\ PDF :!md2beamer % <CR><CR>
+menu Syntax.-Sep-                      :
+menu Syntax.Markdown\ to\ &PDF         :!md2pdf % <CR><CR>
+menu Syntax.Markdown\ to\ &Beamer\ PDF :!md2beamer % <CR><CR>
+
 
 ""===========================================================================
 "" PHYLO MENU (experimental)
 ""===========================================================================
 
 "" Run Alignment programs
-menu Phylo.Do\ Alignment.CLUSTALO.Protein\ or\ DNA :! clustalo --infile=% --outfile=ClUsTaLo.aln <CR>: tabe ClUsTaLo.aln<CR> : normal gg<CR>
-menu Phylo.Do\ Alignment.CLUSTALO.-Sep-       :
-menu Phylo.Do\ Alignment.CLUSTALO.Read\ CLUSTALO\ man\ page : call ReadMan('clustalo')<CR>
-menu Phylo.Do\ Alignment.CLUSTALW.Protein :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/%/>/<CR>: normal gg<CR>
-menu Phylo.Do\ Alignment.CLUSTALW.DNA     :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/#/>/<CR>: normal gg<CR>
-menu Phylo.Do\ Alignment.CLUSTALW.-Sep-       :
-menu Phylo.Do\ Alignment.CLUSTALW.Read\ CLUSTALW\ man\ page : call ReadMan('clustalw')<CR>
-menu Phylo.Do\ Alignment.MUSCLE.Protein :! muscle -in % -out mUsClE.aln<CR>: tabe mUsClE.aln<CR> :normal gg<CR>
-menu Phylo.Do\ Alignment.MUSCLE.-Sep-       :
-menu Phylo.Do\ Alignment.MUSCLE.Read\ MUSCLE\ man\ page : call ReadMan('muscle')<CR>
-menu Phylo.Do\ Alignment.MAFFT.mafft       :! mafft  % > MaFfT.mafft.ali<CR> : tabe  MaFfT.mafft.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.linsi       :! linsi  % > MaFfT.linsi.ali<CR> : tabe  MaFfT.linsi.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.ginsi       :! ginsi  % > MaFfT.ginsi.ali<CR> : tabe  MaFfT.ginsi.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.einsi       :! einsi  % > MaFfT.einsi.ali<CR> : tabe  MaFfT.einsi.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.fftnsi      :! fftnsi % > MaFfT.fftnsi.ali<CR>: tabe  MaFfT.fftnsi.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.fftns       :! fftns  % > MaFfT.fftns.ali<CR> : tabe  MaFfT.fftns.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.nwns        :! nwns   % > MaFfT.nwns.ali<CR>  : tabe  MaFfT.nwns.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.nwnsi       :! nwnsi  % > MaFfT.nwnsi.ali<CR> : tabe  MaFfT.nwnsi.ali<CR><CR>
-menu Phylo.Do\ Alignment.MAFFT.-Sep-       :
-menu Phylo.Do\ Alignment.MAFFT.Read\ MAFFT\ man\ page : call ReadMan('mafft')<CR>
+menu &Phylo.Do\ &Alignment.CLUSTALO.Protein\ or\ DNA :! clustalo --infile=% --outfile=ClUsTaLo.aln <CR>: tabe ClUsTaLo.aln<CR> : normal gg<CR>
+menu &Phylo.Do\ &Alignment.CLUSTALO.-Sep-            :
+menu &Phylo.Do\ &Alignment.CLUSTALO.Read\ CLUSTALO\ man\ page : call ReadMan('clustalo')<CR>
+menu &Phylo.Do\ &Alignment.CLUSTALW.Protein          :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/%/>/<CR>: normal gg<CR>
+menu &Phylo.Do\ &Alignment.CLUSTALW.DNA              :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/#/>/<CR>: normal gg<CR>
+menu &Phylo.Do\ &Alignment.CLUSTALW.-Sep-            :
+menu &Phylo.Do\ &Alignment.CLUSTALW.Read\ CLUSTALW\ man\ page : call ReadMan('clustalw')<CR>
+menu &Phylo.Do\ &Alignment.MUSCLE.Protein            :! muscle -in % -out mUsClE.aln<CR>: tabe mUsClE.aln<CR> :normal gg<CR>
+menu &Phylo.Do\ &Alignment.MUSCLE.-Sep-              :
+menu &Phylo.Do\ &Alignment.MUSCLE.Read\ MUSCLE\ man\ page : call ReadMan('muscle')<CR>
+menu &Phylo.Do\ &Alignment.MAFFT.mafft               :! mafft  % > MaFfT.mafft.ali<CR> : tabe  MaFfT.mafft.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.linsi               :! linsi  % > MaFfT.linsi.ali<CR> : tabe  MaFfT.linsi.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.ginsi               :! ginsi  % > MaFfT.ginsi.ali<CR> : tabe  MaFfT.ginsi.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.einsi               :! einsi  % > MaFfT.einsi.ali<CR> : tabe  MaFfT.einsi.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.fftnsi              :! fftnsi % > MaFfT.fftnsi.ali<CR>: tabe  MaFfT.fftnsi.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.fftns               :! fftns  % > MaFfT.fftns.ali<CR> : tabe  MaFfT.fftns.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.nwns                :! nwns   % > MaFfT.nwns.ali<CR>  : tabe  MaFfT.nwns.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.nwnsi               :! nwnsi  % > MaFfT.nwnsi.ali<CR> : tabe  MaFfT.nwnsi.ali<CR><CR>
+menu &Phylo.Do\ &Alignment.MAFFT.-Sep-               :
+menu &Phylo.Do\ &Alignment.MAFFT.Read\ MAFFT\ man\ page : call ReadMan('mafft')<CR>
 
 "" Edit alignments
 "menu Phylo.Edit.-Sep-	:
-menu Phylo.Utilities.Get\ FASTA\ info                      : ! get_fasta_info %<CR>
-menu Phylo.Utilities.Remove\ all\ gaps\ in\ FASTA          : call DegapFasta()<CR>
-menu Phylo.Utilities.Align\ taxlabels\ (in\ phyml\ format) : Align<CR>
-menu Phylo.Utilities.Count\ sequences\ (in\ FASTA\ format) : call GetNtax2()<CR>
-menu Phylo.Utilities.Set\ filetype\ to\ DNA                : set ft=align<CR>
-menu Phylo.Utilities.Set\ filetype\ to\ AA                 : set ft=aalign<CR>
-menu Phylo.Utilities.Set\ filetype\ to\ Nexus              : set ft=nexus<CR>
-menu Phylo.Utilities.Display\ Newick\ as\ ASCII            : ! nw_display -S  % > AsCiI.tRe<CR> : tabe AsCiI.tRe<CR><CR>
+menu &Phylo.&Utilities.Get\ FASTA\ info                      : ! get_fasta_info %<CR>
+menu &Phylo.&Utilities.Remove\ all\ gaps\ in\ FASTA          : call DegapFasta()<CR>
+menu &Phylo.&Utilities.Align\ taxlabels\ (in\ phyml\ format) : Align<CR>
+menu &Phylo.&Utilities.Count\ sequences\ (in\ FASTA\ format) : call GetNtax2()<CR>
+menu &Phylo.&Utilities.Set\ filetype\ to\ DNA                : set ft=align<CR>
+menu &Phylo.&Utilities.Set\ filetype\ to\ AA                 : set ft=aalign<CR>
+menu &Phylo.&Utilities.Set\ filetype\ to\ Nexus              : set ft=nexus<CR>
+menu &Phylo.&Utilities.Display\ Newick\ as\ ASCII            : ! nw_display -S  % > AsCiI.tRe<CR> : tabe AsCiI.tRe<CR><CR>
 
 "" Format conversions
-menu Phylo.Convert.Phyml\ to\ FASTA : Phyml2Fasta<CR>
-menu Phylo.Convert.FASTA\ to\ Phyml : call Fasta2Phyml()<CR><CR>
-menu Phylo.Convert.FASTA\ to\ Nexus : Fas2Nex<CR> : set ft=nexus<CR>
-menu Phylo.Convert.FASTA\ to\ Tab   : Fasta2Tab<CR>
-menu Phylo.Convert.Tab\ to\ FASTA   : Tab2Fasta<CR>
-menu Phylo.Convert.Unwrap\ FASTA    : call Fasta2NonInterLeavedFasta()<CR><CR>
-menu Phylo.Convert.Wrap\ FASTA      : WrapFasta<CR>
+menu &Phylo.&Convert.Phyml\ to\ FASTA : Phyml2Fasta<CR>
+menu &Phylo.&Convert.FASTA\ to\ Phyml : call Fasta2Phyml()<CR><CR>
+menu &Phylo.&Convert.FASTA\ to\ Nexus : Fas2Nex<CR> : set ft=nexus<CR>
+menu &Phylo.&Convert.FASTA\ to\ Tab   : Fasta2Tab<CR>
+menu &Phylo.&Convert.Tab\ to\ FASTA   : Tab2Fasta<CR>
+menu &Phylo.&Convert.Unwrap\ FASTA    : call Fasta2NonInterLeavedFasta()<CR><CR>
+menu &Phylo.&Convert.Wrap\ FASTA      : WrapFasta<CR>
 
 "" DNA
-menu Phylo.DNA.RevComp                  : RC<CR>
-menu Phylo.DNA.Insert\ Random\ DNA\ Seq : Randseq
+menu &Phylo.&DNA.RevComp                  : RC<CR>
+menu &Phylo.&DNA.Insert\ Random\ DNA\ Seq : Randseq
 
 "" Run programs
 "" need to capture the output from fasttree in a new buffer instead of having
 "" to hardcode the output name
-menu Phylo.Run.Fasttree\ (DNA)         : ! fasttree -nt % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
-menu Phylo.Run.Fasttree\ (AA)          : ! fasttree  % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
-menu Phylo.Run.PAUP                    : ! paup %<CR>
-menu Phylo.Run.MrBayes                 : ! mb -i %<CR>
-"menu Phylo.Phylo.Run\ Phyml :
-menu Phylo.Run.MrAIC\ (24\ nt\ models) : ! mraic.pl %<CR><CR>: tabe *.MrAIC.txt<CR>
-menu Phylo.Run.MrAIC\ (56\ nt\ models) : ! mraic.pl -modeltest %<CR><CR>: tabe *.MrAIC.txt<CR>
-menu Phylo.Run.pMrAIC\ (24\ nt\ models) : ! pmraic.pl --noverbose %<CR><CR>: tabe *.pMrAIC.txt<CR>
-menu Phylo.Run.pMrAIC\ (56\ nt\ models) : ! pmraic.pl --noverbose --modeltest %<CR><CR>: tabe *.pMrAIC.txt<CR>
+menu &Phylo.&Run.&Fasttree\ (DNA)          : ! fasttree -nt % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
+menu &Phylo.&Run.Fasttree\ (AA)            : ! fasttree  % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
+menu &Phylo.&Run.&PAUP                     : ! paup %<CR>
+menu &Phylo.&Run.&MrBayes                  : ! mb -i %<CR>
+"menu &Phylo.Phylo.Run\ Phyml :
+menu &Phylo.&Run.MrAIC\ (24\ nt\ models)   : ! mraic.pl %<CR><CR>: tabe *.MrAIC.txt<CR>
+menu &Phylo.&Run.MrAIC\ (56\ nt\ models)   : ! mraic.pl -modeltest %<CR><CR>: tabe *.MrAIC.txt<CR>
+menu &Phylo.&Run.pMr&AIC\ (24\ nt\ models) : ! pmraic.pl --noverbose %<CR><CR>: tabe *.pMrAIC.txt<CR>
+menu &Phylo.&Run.pMrAIC\ (56\ nt\ models)  : ! pmraic.pl --noverbose --modeltest %<CR><CR>: tabe *.pMrAIC.txt<CR>
 
