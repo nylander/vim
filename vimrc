@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: sön mar 03, 2024  11:34
+"" Last modified: ons mar 20, 2024  10:11
 ""
 "" Sign: Johan Nylander
 ""
@@ -832,7 +832,7 @@ map M :%s//\r/g
 " map _u :s/^# //<CR>
 
 "" Map F4 to TagList on/off
-nnoremap <silent> <F4> :TlistToggle<CR>
+nnoremap <silent> <F4> :TlistToggle \| sp <CR>
 
 "" Map the F12 key to Sketch on/off
 "map <F12> :call ToggleSketch()<CR>
