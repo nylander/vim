@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: ons mar 20, 2024  10:11
+"" Last modified: ons apr 02, 2025  02:50
 ""
 "" Sign: Johan Nylander
 ""
@@ -65,8 +65,8 @@
 "" DEFAULTS
 ""===========================================================================
 
-syntax on                                                     " Enable syntax
 filetype plugin indent on                                     " Enable plugins for filetype
+syntax on                                                     " Enable syntax
 "set textwidth=100                                            " Maximum width of text that is being inserted (line will be broken).
 set wrap!                                                     " Do not soft wrap buffer.
 set nu                                                        " Note: no numbers ('set nu!') when teaching.
@@ -79,13 +79,17 @@ set expandtab                                                 " Replace tabs wit
 autocmd FileType make setlocal noexpandtab                    "   but not if editing a Makefile
 set matchpairs+=<:>                                           " Add <> as match pairs (default "(:),{:},[:]")
 set nocompatible                                              " For vimwiki
-"set cursorline cursorcolumn                                  " Highlight current line/column
 set ruler                                                     " Show the line and column number of the cursor position.
 set backspace=indent,eol,start                                " Backspace behavior.
 set foldmethod=indent                                         " Enable folding on indentation. Use zo, zc, zM, zR to open/close.
 set foldminlines=0                                            " Fold also single lines.
 set foldenable!                                               " Fold by default.
 "set viminfo='10,\"100,:20,%,n~/.viminfo
+"set cursorline cursorcolumn                                  " Highlight current line/column
+let &t_SI = "\<Esc>[6 q"                                      " Cursor settings, t_SI insert, t_EI normal, t_SR replace
+let &t_SR = "\<Esc>[4 q"                                      " 1 = blinking block,        2 = steady block
+let &t_EI = "\<Esc>[2 q"                                      " 3 = blinking underline,    4 = steady underline
+                                                              " 5 = blinking vertical bar, 6 = steady vertical bar
 
 let g:copilot_enabled = v:false                               " Disable copilot by default. Enable by :Copilot enable
 let g:instant_markdown_autostart = 0                          " Disable instant_markdown by default
@@ -114,7 +118,7 @@ set guioptions-=T                                   " No toolbar in GUI
 if has("gui_running")
     "" GUI is running or is about to start.
     "" Maximize gvim window.
-    set lines=40 columns=150
+    set lines=40 columns=140
 else
     "" This is console Vim.
     if exists("+lines")
@@ -133,7 +137,7 @@ endif
 "" For vim-templates
 "" TODO: use global variable for company
 function! GetCompany()
-    return 'NRM/NBIS'
+    return 'NRM'
 endfunction
 
 "" For vim-templates
@@ -220,7 +224,7 @@ endfunction
 "" Count the sequence length from FASTA file
 "function! GetNchar()
 "    let nchar=0
-"    "...
+"    ...
 "    return nchar
 "endfunction
 
