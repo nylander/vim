@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tor jan 25, 2024  10:01
+- Last modified: tor okt 30, 2025  03:02
 - Sign: Johan Nylander
 
 ---
@@ -14,11 +14,13 @@ of which must be learned.*
 
 ## Description
 
-Reasonable setup for efficient work with the [vim
-editor](https://www.vim.org/).  In particular, I use settings for the
+Reasonable setup for efficient work with the [VIM - Vi IMproved text
+editor](https://www.vim.org/). In particular, I use settings for the
 "graphical vim" (`gvim`).
 
-#### Current file structure
+Oct 2025: I'm using **gvim v.9.1**
+
+## Current file structure
 
     vim/
        ├── pack
@@ -64,7 +66,7 @@ section](#replicating-the-repository-on-a-new-machine) below.
         :helptags ~/.vim/pack/plugins/start/taglist.vim
 
 If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
-not loaded at runtime but can be added by using the command `:packadd foo`.
+*not* loaded at runtime but can be added by using the command `:packadd foo`.
 
 - Remove submodule
 
@@ -102,19 +104,20 @@ submodule as examples below).
 
 ## Replicating the repository on a new machine
 
-(Note: partly untested)
+(Note: partly untested!)
 
 We will clone the vim directory and then symlink to `$HOME/.vim` (and
 `$HOME/.vim/vimrc` to `$HOME/.vimrc`).  One alternative is to clone the repo
 directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
-1. Install prerequisites (see also [Update...](#update-to-latest-vim-version-using-ppa) below)
+1. Install prerequisites (see also step 5.)
 
         $ sudo apt install vim-gui-common exuberant-ctags
 
 2. Clone the repository (recursively to clone plugins as well).
 
         $ git clone --recurse-submodules -j8 https://github.com/nylander/vim.git
+        $ cd vim
 
 3. Generate helptags for plugins:
 
@@ -126,20 +129,13 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
         $ ln -sf $PWD/vim $HOME/.vim
         $ ln -sf $PWD/vim/vimrc $HOME/.vimrc
 
-
-## Update to latest vim version using PPA
-
-Oct 2023: Update to vim 9 from PPA:
-
-    $ sudo add-apt-repository ppa:jonathonf/vim
-    $ sudo apt update
-    $ sudo apt install vim
-    $ vim --version
-
+5. See the file [vimrc](vimrc) for *additional programs* required for full
+   functionality. This involves both installing using package managers or
+   manually installing from the internet (github.com etc).
 
 ### Links
 
+- <https://github.com/vim/vim/blob/03c3bd9fd094c1aede2e8fe3ad8fd25b9f033053/runtime/doc/repeat.txt#L515>
 - <https://gist.github.com/manasthakur/d4dc9a610884c60d944a4dd97f0b3560>
-- <https://itsfoss.com/install-latest-vim-ubuntu/>
 
 

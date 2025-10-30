@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: ons apr 02, 2025  02:50
+"" Last modified: tor okt 30, 2025  02:50
 ""
 "" Sign: Johan Nylander
 ""
@@ -12,7 +12,7 @@
 ""     COMMANDS
 ""     FILE TYPES
 ""     MAPPINGS
-""     PHYLO MENU
+""     GUI MENUS
 ""     HELP
 
 
@@ -59,6 +59,29 @@
 "" If you put the plugin (say, `foo`) in `~/.vim/vimrc/pack/plugins/opt`, it is
 "" not loaded at runtime but can be added by using the command `:packadd foo`.
 ""
+"" NOTE: In addition to the standard packages above, some of the functions
+"" and commands in this file calls external software. Both home made(!) and
+"" avalilable from, e.g. debian/ubuntu apt sources.
+"" Current list with sources:
+""  - clustalo: sudo apt install clustalo
+""  - clustalw: sudo apt install clustalw
+""  - fasttree: sudo apt install fasttree
+""  - mafft: sudo apt install mafft
+""  - man: sudo apt install man-db
+""  - mb: sudo apt install mrbayes
+""  - muscle3: sudo apt install muscle3
+""  - pdftotext: sudo apt install poppler-utils
+""  - ps2pdf: sudo apt install ghostscript
+""
+""  - fas2nex.stdinout: https://gist.github.com/nylander/3e197cb3c683419965b84d327a5217d1
+""  - get_fasta_info: https://github.com/nylander/get_fasta_info
+""  - md2beamer: https://github.com/nylander/md2pdf
+""  - md2pdf: https://github.com/nylander/md2pdf
+""  - mraic.pl: https://github.com/nylander/mraic
+""  - nw_display: https://github.com/tjunier/newick_utils
+""  - paup: https://phylosolutions.com/paup-test
+""  - pmraic.pl: https://github.com/nylander/pmraic
+""
 
 
 ""===========================================================================
@@ -72,10 +95,10 @@ set wrap!                                                     " Do not soft wrap
 set nu                                                        " Note: no numbers ('set nu!') when teaching.
 set shiftwidth=4                                              " Indent 4 spaces
 set shiftround                                                " Round indent to multiple of 'shiftwidth'
-set autoindent                                                " Reuse indent on current line
-set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:× " Display indentation guides
 set tabstop=4                                                 " Tab is 4 spaces
 set expandtab                                                 " Replace tabs with spaces,
+set autoindent                                                " Reuse indent on current line
+set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:× " Display indentation guides
 autocmd FileType make setlocal noexpandtab                    "   but not if editing a Makefile
 set matchpairs+=<:>                                           " Add <> as match pairs (default "(:),{:},[:]")
 set nocompatible                                              " For vimwiki
@@ -134,25 +157,25 @@ endif
 "" FUNCTIONS
 ""===========================================================================
 
-"" For vim-templates
-"" TODO: use global variable for company
 function! GetCompany()
+    "" For vim-templates
+    "" TODO: use global variable for company
     return 'NRM'
 endfunction
 
-"" For vim-templates
-"" TODO: use global variable for user
 function! GetFullUser()
+    "" For vim-templates
+    "" TODO: use global variable for user
     return 'Johan Nylander'
 endfunction
 
-"" Automatically update the 'Last modified:' date on write buffert.
-"" http://vim.wikia.com/wiki/Insert_current_date_or_time
-""" If buffer modified, update any 'Last modified: ' in the first 20 lines.
-""" 'Last modified: ' can have up to 10 characters before (they are retained).
-""" Restores cursor and window position using save_cursor variable.
-"" TODO: manipulate lang: lan tim en_US.UTF-8
 function! LastModified()
+    "" Automatically update the 'Last modified:' date on write buffert.
+    "" http://vim.wikia.com/wiki/Insert_current_date_or_time
+    """ If buffer modified, update any 'Last modified: ' in the first 20 lines.
+    """ 'Last modified: ' can have up to 10 characters before (they are retained).
+    """ Restores cursor and window position using save_cursor variable.
+    """ TODO: Use my InsertEnglishTimestamp() function
     if &modified
         let save_cursor = getpos(".")
         let n = min([20, line("$")])
@@ -163,8 +186,8 @@ function! LastModified()
     endif
 endfun
 
-"" Print buffer to PDF and postscript
 function! PrintPdf()
+    "" Print buffer to PDF and postscript
     exe ':set path=.'
     let utfil=expand("%:t:r") . '.ps'
     echo "printing current file to PDF"
@@ -173,8 +196,8 @@ function! PrintPdf()
     exe ':!ps2pdf ' . utfil
 endfunction
 
-"" Print buffer to postscript
 function! PrintPs()
+    "" Print buffer to postscript
     exe ':set path=.'
     let utfil=expand("%:t:r") . '.ps'
     echo "printing current file to ps"
@@ -182,38 +205,40 @@ function! PrintPs()
     exe ':hardcopy > ' . utfil
 endfunction
 
-"" Count the number of '>' in file
 function! GetNtax()
+    "" Count the number of '>' in file
     let ntax=0
     g/^/let ntax+=strlen(substitute(getline('.'), '[^>]', '', 'g'))
     return ntax
 endfunction
 
-"" Count the number of '>' in file
 function! GetNtax2()
+    "" Count the number of '>' in file
     let ntax=0
     g/^/let ntax+=strlen(substitute(getline('.'), '[^>]', '', 'g'))
     redraw
     echomsg "Number of sequences: " ntax
 endfunction
 
-"" Remove gaps in Fasta
 function! DegapFasta()
+    "" Remove gaps in Fasta
     exe ':g!/^>/s/-//g'
     exe ':g/^\s*$/d'
     exe ':normal gg'
 endfunction
 
-"" Convert interleaved FASTA to non-interleaved FASTA
-"" WARNING: does not work well on large (long sequences) files!
 "function! Fasta2NonInterLeavedFasta()
+"    " Convert interleaved FASTA to non-interleaved FASTA
+"    " WARNING: does not work well on large (long sequences) files!
 "    exe ':g/^>/s/\(^>.*\)/\1@/'
 "    exe ':%s/\n//'
 "    exe ':s/@/\r/g'
 "    exe ':g!/^>/s/>/\r>/g'
 "    echo ''
 "endfunction
+
 function! Fasta2NonInterLeavedFasta()
+    "" Convert interleaved FASTA to non-interleaved FASTA
     exe ':%g/^>/s/\(^>.*\)/\1@/'
     exe ':%g!/^>/-1join'
     exe ':%s/@/\r/g'
@@ -221,15 +246,15 @@ function! Fasta2NonInterLeavedFasta()
     echo ''
 endfunction
 
-"" Count the sequence length from FASTA file
 "function! GetNchar()
+"    " Count the sequence length from FASTA file
 "    let nchar=0
 "    ...
 "    return nchar
 "endfunction
 
-"" Count the length of longest line in file (not counting white space)
 function! GetMaxLineLength()
+    "" Count the length of longest line in file (not counting white space)
     let maxLength=0
     let start=line("1")
     let end=line("$")
@@ -244,8 +269,9 @@ function! GetMaxLineLength()
     return maxLength
 endfunction
 
-"" FASTA interleaved to Phyml transformer.
 function! Fasta2Phyml()
+    "" FASTA interleaved to Phyml transformer
+    "" Uing functions GetNtax and GetMaxLineLength
     let ntax=GetNtax()
     exe ':normal gg'
     exe ':s/>/\r>/'
@@ -262,11 +288,10 @@ function! Fasta2Phyml()
     "echo "Ntax: " ntax "Nchar: " nchar
 endfunction
 
-""  RandSeq: generate random (P(A)=P(C)=P(G)=P(T)=0.25) DNA sequence
-""  Source: http://www.drchip.org/astronaut/vim
-""  Basically using Dr Chip's PassWGen (http://www.drchip.org/astronaut/vim) with
-""     call PassWGen(len,"ACGT")
-fun! RandSeq(len)
+function! RandSeq(len)
+    "" RandSeq: generate random (P(A)=P(C)=P(G)=P(T)=0.25) DNA sequence
+    "" Using function Dice()
+    "" Source: http://www.drchip.org/astronaut/vim
     let symbols = "ACGT"
     let symlen = strlen(symbols)
     let pw     = ""
@@ -278,19 +303,19 @@ fun! RandSeq(len)
     "let fasta = ">" . "\n" . pw
     "return fasta
     return pw
-endfun
+endfunction
 
-"fun! RandSeq(len,symbols)
-"  "let symbols = "ACGT"
-"  let symlen = strlen(a:symbols)
-"  let pw     = ""
-"  let i      = 0
-"  while i < a:len
-"   let pw = pw.(a:symbols[Dice(1,symlen)-1])
-"   let i  = i + 1
-"  endwhile
-"  return pw
-"endfun
+"function! RandSeq(len,symbols)
+"    let symbols = "ACGT"
+"    let symlen = strlen(a:symbols)
+"    let pw     = ""
+"    let i      = 0
+"    while i < a:len
+"        let pw = pw.(a:symbols[Dice(1,symlen)-1])
+"        let i  = i + 1
+"    endwhile
+"    return pw
+"endfunction
 
 "" Randomization Variables: {{{1
 "" with a little extra randomized start from localtime()
@@ -298,9 +323,9 @@ let g:rndm_m1 = 32007779 + (localtime()%100 - 50)
 let g:rndm_m2 = 23717810 + (localtime()/86400)%100
 let g:rndm_m3 = 52636370 + (localtime()/3600)%100
 
-"" Rndm: generate pseudo-random variate on [0,100000000)
-"" Source: http://www.drchip.org/astronaut/vim
-fun! Rndm()
+function! Rndm()
+    "" Rndm: generate pseudo-random variate on [0,100000000)
+    "" Source: http://www.drchip.org/astronaut/vim
     let m4= g:rndm_m1 + g:rndm_m2 + g:rndm_m3
     if( g:rndm_m2 < 50000000 )
         let m4= m4 + 1357
@@ -315,11 +340,12 @@ fun! Rndm()
     let g:rndm_m2 = g:rndm_m3
     let g:rndm_m3 = m4
     return g:rndm_m3
-endfun
+endfunction
 
-"" Urndm: generate uniformly-distributed pseudo-random variate on [a,b]
-"" Source: http://www.drchip.org/astronaut/vim
-fun! Urndm(a,b)
+function! Urndm(a,b)
+    "" Urndm: generate uniformly-distributed pseudo-random variate on [a,b]
+    "" Using function Rndm
+    "" Source: http://www.drchip.org/astronaut/vim
     " sanity checks
     if a:b < a:a
         return 0
@@ -339,12 +365,13 @@ fun! Urndm(a,b)
         let rnd= Rndm()
     endw
     return a:a + rnd/isz
-endfun
+endfunction
 
-"" Dice: assumes one is rolling a qty of dice with "sides" sides.
-""       Example - to roll 5 four-sided dice, call Dice(5,4)
-"" Source: http://www.drchip.org/astronaut/vim
-fun! Dice(qty,sides)
+function! Dice(qty,sides)
+    "" Dice: assumes one is rolling a qty of dice with "sides" sides.
+    ""       Example - to roll 5 four-sided dice, call Dice(5,4)
+    "" Uses function Urndm
+    "" Source: http://www.drchip.org/astronaut/vim
     let roll= 0
     let sum= 0
     while roll < a:qty
@@ -352,56 +379,56 @@ fun! Dice(qty,sides)
         let roll= roll + 1
     endw
     return sum
-endfun
+endfunction
 
-"" Insert random sequence using external Perl-script
 "function! RandSeq(len)
+"    "" Insert random sequence using external Perl-script
 "    let LENGTH = a:len
 "    exe ':r!/home/nylander/bin/getrandomsequence.pl' . ' ' . LENGTH
 "endfunction
 "command! -nargs=1 Randseq : call RandSeq(<args>)
 
-"" Call ToggleSketch while disabling the autofolding
 function MySketch()
-"    set foldenable!
+    "" Call ToggleSketch while disabling the autofolding
+    "set foldenable!
     call ToggleSketch()
 endfunction
 
-"" A function to save word under cursor to a file
 function! SaveWord()
+    "" A function to save word under cursor to a file
    normal yiw
    exe ':!echo '.@0.' >> word_from_vim.txt'
 endfunction
 
-"" Count letters in the word under the cursor
 function LC()
+    "" Count letters in the word under the cursor
     normal yiW
     echo strlen(@") . " characters in word"
 endfunction
 
-"" Print the position in word under cursor
 function PC()
+    "" Print the position in word under cursor
     normal yiB
     echo strlen(@") . " position in word"
 endfunction
 
-"" Count letters in the line under the cursor, v.2
 function LC2()
+    "" Count letters in the line under the cursor, v.2
     let string_length = strlen(substitute(getline("."), ".*", "&", "g"))
     echo string_length . " characters in line"
 endfunction
 
-"" Count words in the line under the cursor, v.3
 "function LC3()
-"  let string_length = strlen(substitute(getline("."), ".*", "&", "g"))
-"  echo string_length . " words in line"
+"    "" Count words in the line under the cursor, v.3
+"    let string_length = strlen(substitute(getline("."), ".*", "&", "g"))
+"    echo string_length . " words in line"
 "endfunction
 
-"" Count A, C, G, and T's on a line
-"" This function counts the AT and GC on the WHOLE line (and only one line)
-"" It reports the AT/GC contents and the calculated Tm based on 4*GC+2*AT
-"" Alexandru Tudor Constantinescu, 12/14/2004
 function! Count_bases()
+    "" Count A, C, G, and T's on a line
+    "" This function counts the AT and GC on the WHOLE line (and only one line)
+    "" It reports the AT/GC contents and the calculated Tm based on 4*GC+2*AT
+    "" Alexandru Tudor Constantinescu, 12/14/2004
     let l:string_length = strlen(substitute(getline("."), ".*", "&", "g"))
     let l:a = l:string_length - strlen(substitute(getline("."), "\\c[a]", "", "g"))
     let l:c = l:string_length - strlen(substitute(getline("."), "\\c[c]", "", "g"))
@@ -412,19 +439,19 @@ function! Count_bases()
     echo "Length=" . l:string_length " (" "A=" . l:a "C=" . l:c "G=" . l:g "T=" . l:t "-=" . l:gap "other=" . l:other ")"
 endfunction
 
-" Get the reverse-complement of a certain DNA sequence
-" Alexandru Tudor Constantinescu,  02/14/2005
-" you have to select a block of text in advance
-" the script is crude, in that it assumes you have only ATCG
-" capitalization does not get screwed up
-" at this moment 12/07/2004, the whole LINE (i.e. not only part of line) gets
-" changed, irrespective of what you select.
-" Tim Chase and William Nater 12/12/2004
-" since ignorecase gives problems (i.e. capitalization is lost)
-" The replacement should be done by selecting a block of text (beware that the
-" WHOLE line will get changed!!) and then issuing the commmand:
-" :RC
-fun! Rev(result)
+function! Rev(result)
+    " Get the reverse-complement of a certain DNA sequence
+    " Alexandru Tudor Constantinescu,  02/14/2005
+    " you have to select a block of text in advance
+    " the script is crude, in that it assumes you have only ATCG
+    " capitalization does not get screwed up
+    " at this moment 12/07/2004, the whole LINE (i.e. not only part of line) gets
+    " changed, irrespective of what you select.
+    " Tim Chase and William Nater 12/12/2004
+    " since ignorecase gives problems (i.e. capitalization is lost)
+    " The replacement should be done by selecting a block of text (beware that the
+    " WHOLE line will get changed!!) and then issuing the commmand:
+    " :RC
     let l:i = strlen(a:result) - 1
     let l:result = ''
     while (l:i > -1)
@@ -432,9 +459,12 @@ fun! Rev(result)
         let l:i = l:i - 1
     endwhile
     return l:result
-endfun
+endfunction
 
 function! RC_Tim(l1, l2)
+    " Get the reverse-complement of current  line (DNA sequence)
+    " using the Rev() function
+    " Alexandru Tudor Constantinescu,  02/14/2005
     let l:str = getline(a:l1)
     let l:len = strlen(l:str)
     let l:ignorecs = &l:ic
@@ -447,8 +477,8 @@ function! RC_Tim(l1, l2)
     let &l:ic = l:ignorecs
 endfunction
 
-"" Show seq position. Assumes this format: Seqlabel ACGT
 function! ShowSeqPos()
+    "" Show seq position. Assumes this format: Seqlabel ACGT
     let mycolumn = col(".")
     let [lnum, seqstart] = searchpos('\s', 'bcn')
     let seqpos = mycolumn - seqstart
@@ -458,14 +488,14 @@ function! ShowSeqPos()
     return seqpos
 endfunction
 
-"" Show sequence label. Beta 01/17/2013 09:45:18 PM
 function! ShowSeqLabel()
+    "" Show sequence label. Beta 01/17/2013 09:45:18 PM
     let seqlabel = substitute(getline("."), '\s*\(\S\+\)\s\+.*', '\1', '')
     return seqlabel
 endfunction
 
-"" C-Comment/uncomment function modified from vim.org/tips
 function! CComment()
+    "" C-Comment/uncomment function modified from vim.org/tips
     if getline(".") =~ '\/\*'
         let hls=@/
         s/^\/\*//
@@ -479,9 +509,9 @@ function! CComment()
     endif
 endfunction
 
-"" Nexus-Comment/uncomment
-"" Works on line-by-line basis only
 function! NexusComment()
+    "" Nexus-Comment/uncomment
+    "" Works on line-by-line basis only
     if getline(".") =~ '['
         let hls=@/
         s/^\(\s*\)\[/\1/
@@ -495,8 +525,8 @@ function! NexusComment()
     endif
 endfunction
 
-"" Perl-Comment/uncomment
 function! PerlComment()
+    "" Perl-Comment/uncomment
     if getline(".") =~ '^\s*#'
         let hls=@/
         s/^\(\s*\)#/\1/
@@ -508,8 +538,8 @@ function! PerlComment()
     endif
 endfunction
 
-"" LaTeX-Comment/uncomment
 function! LaTeXComment()
+    "" LaTeX-Comment/uncomment
     if getline(".") =~ '%'
         let hls=@/
         s/^%//
@@ -521,12 +551,12 @@ function! LaTeXComment()
     endif
 endfunction
 
-"" Vertical copy
-"" Author: Vijayandra Singh <vijayandra@netzero.com>
-"" Modified: 2006 Dec 24
-"" License: Public Domain
-"" Version: 1.02
-func Stuff(str,justif,fillchar,len)
+function! Stuff(str,justif,fillchar,len)
+    "" Vertical copy
+    "" Author: Vijayandra Singh <vijayandra@netzero.com>
+    "" Modified: 2006 Dec 24
+    "" License: Public Domain
+    "" Version: 1.02
     let out = a:str
     let intendedlen  = a:len
     let left_or_right = a:justif
@@ -539,7 +569,7 @@ func Stuff(str,justif,fillchar,len)
         endif
     endwhile
     return out
-endfunc
+endfunction
 
 function! ColCopy()
     "let start=line(".") " From current line
@@ -567,27 +597,10 @@ function! ColCopy()
     endwhile
 endfunction
 
-"" Search for visually selected text
-"" Basically you press * or # to search for the current selection
-"" From an idea by Michael Naumann
-"" Not working at the moment 04/18/2007 11:22:39 AM CEST
-"function! VisualSearch(direction) range
-"  let l:saved_reg = @"
-"  execute "normal! vgvy"
-"  let l:pattern = escape(@", '\\/.*$^~[]')
-"  let l:pattern = substitute(l:pattern, "\n$", "", "")
-"  if a:direction == 'b'
-"    execute "normal ?" . l:pattern . "^M"
-"  else
-"    execute "normal /" . l:pattern . "^M"
-"  endif
-"  let @/ = l:pattern
-"  let @" = l:saved_reg
-"endfunction
-
-"" Align columns based on white space by visually select a text, and then
-"" :Align<CR> or press '\a'
 function! AlignSection(regex) range
+    "" Align columns based on white space by visually select a text, and then
+    "" Uses function AlignLine
+    "" :Align<CR> or press '\a'
     let extra = 1
     let sep = empty(a:regex) ? '\s\+' : a:regex
     let maxpos = 0
@@ -603,6 +616,7 @@ function! AlignSection(regex) range
 endfunction
 
 function! AlignLine(line, sep, maxpos, extra)
+    "" Used by function AlignSection
     let m = matchlist(a:line, '\(.\{-}\) \{-}\('.a:sep.'.*\)')
     if empty(m)
         return a:line
@@ -611,11 +625,11 @@ function! AlignLine(line, sep, maxpos, extra)
     return m[1] . spaces . m[2]
 endfunction
 
-" Highlight a column in csv text.
-" :Csv 1    " highlight first column
-" :Csv 12   " highlight twelfth column
-" :Csv 0    " switch off highlight
 function! CSVH(colnr)
+    " Highlight a column in csv text.
+    " :Csv 1    " highlight first column
+    " :Csv 12   " highlight twelfth column
+    " :Csv 0    " switch off highlight
     if a:colnr > 1
         let n = a:colnr - 1
         execute 'match Keyword /^\([^,]*,\)\{'.n.'}\zs[^,]*/'
@@ -628,10 +642,10 @@ function! CSVH(colnr)
     endif
 endfunction
 
-"" Function to read Man page
-"" Source -- Edited by JN from http://vim.wikia.com/wiki/
-""           Open_a_window_with_the_man_page_for_the_word_under_the_cursor
 function! ReadMan(man_word)
+    "" Function to read Man page
+    "" Source -- Edited by JN from http://vim.wikia.com/wiki/
+    ""           Open_a_window_with_the_man_page_for_the_word_under_the_cursor
     exe ':tabnew'
     exe ':r!man ' . a:man_word . ' | col -b'
     exe ':goto'
@@ -639,9 +653,9 @@ function! ReadMan(man_word)
     exe ':set filetype=man'
 endfunction
 
-"" Change case
-""http://vim.wikia.com/wiki/Switching_case_of_characters
 function! TwiddleCase(str)
+    "" Change case
+    ""http://vim.wikia.com/wiki/Switching_case_of_characters
     if a:str ==# toupper(a:str)
         let result = tolower(a:str)
     elseif a:str ==# tolower(a:str)
@@ -652,9 +666,9 @@ function! TwiddleCase(str)
     return result
 endfunction
 
-"" Display indentation guides
-"" http://stackoverflow.com/questions/2158305/is-it-possible-to-display-indentation-guides-in-vim
 "function! ToggleIndentGuides()
+"    "" Display indentation guides
+"    "" http://stackoverflow.com/questions/2158305/is-it-possible-to-display-indentation-guides-in-vim
 "    if exists('b:indent_guides')
 "        call matchdelete(b:indent_guides)
 "        unlet b:indent_guides
@@ -666,12 +680,30 @@ endfunction
 "    endif
 "endfunction
 
-"" Yank word under cursor and put into a Perl-debug print statement
 function! Gettt()
+    "" Yank word under cursor and put into a Perl-debug print statement
     let l:wordUnderCursor = expand("<cWORD>")
     let s:apa = substitute(l:wordUnderCursor, '[\$\%\@]', "", "g")
     let l:cmd = "print Dumper(" . l:wordUnderCursor . ");warn \"\\n" . s:apa . " (hit return to continue)\\n\" and getc();"
     exe "normal o" l:cmd "\<Esc>"
+endfunction
+
+function! InsertEnglishTimestamp() abort
+    " Get timestamp while temporarily changing LC_TIME to en_US.UTF-8
+    let l:langinfo = execute('language')
+    let l:old = ''
+    let l:m = matchlist(l:langinfo, 'time\s\+\(\S\+\)')
+    if !empty(l:m)
+        let l:old = l:m[1]
+    endif
+    silent! language time en_US.UTF-8
+    let l:ts = strftime("%c")
+    if l:old !=# ''
+        silent! execute 'language time ' . l:old
+    else
+        silent! language time
+    endif
+    return l:ts
 endfunction
 
 
@@ -679,24 +711,29 @@ endfunction
 "" COMMANDS
 ""===========================================================================
 
-" Highlight a column in csv text.
+" Highlight a column in csv text
+" Uses function CSVH
 command! -nargs=1 Csv :call CSVH(<args>)
 
 "" Align columns based on white space
+"" Uses function AlignSection
 command! -nargs=? -range Align <line1>,<line2>call AlignSection('<args>')
 
 " Get the reverse-complement of a certain DNA sequence
+" Uses function RC_Tim
 command! -n=* -range RC :call RC_Tim(<line1>,<line2>)
 
 "" Randseq
+"" Uses function RandSeq
 command! -nargs=1 Randseq : call setline(line('.'), getline(line('.')) . RandSeq(<args>))
 
 "" Converts file format to/from unix
 command Unix :set ff=unix
-command Dos :set ff=dos
-command Mac :set ff=mac
+command Dos  :set ff=dos
+command Mac  :set ff=mac
 
 "" Convert interleaved FASTA to non-interleaved FASTA
+"" Uses funciton Fasta2NonInterLeavedFasta
 "command! -nargs=0 Fasta2NonInterLeavedFasta :normal gg | :s/>/\r>/<CR> | :%s/\(^>.\+\)$/\1<skojj/<CR> | :%s/\n//g<CR> | :%s/>/\r>/g<CR> | :%s/<skojj/\r/<CR> | :normal ggdd<CR>
 command! -nargs=0 UnWrapFasta : call Fasta2NonInterLeavedFasta()
 
@@ -713,6 +750,7 @@ command! -nargs=0 WrapFasta :normal gg | :g!/^>/s/.\{70}/&\r/g<CR> | :normal gg<
 command! -nargs=0 Fasta2Phyml3 :normal gg | :%s/^/>/<CR> | :%s/\s\+/\r/<CR>
 
 "" FASTA to NEXUS using external program
+"" Uses external program fas2nex.stdinout
 command! -nargs=0 Fas2Nex :%! fas2nex.stdinout %<CR>
 
 "" FASTA to TAB delimited
@@ -721,14 +759,24 @@ command! -nargs=0 Fasta2Tab :normal gg | :%s/^>\(.*\)/>\1\t/<CR> | :%s/\n//<CR> 
 "" TAB to FASTA
 command! -nargs=0 Tab2Fasta :normal gg | :%s/^\(.*\)\t\(.*\)/>\1\r\2/<CR>
 
-"" Print current buffer to postscript and pdf file
+"" Print current buffer to pdf file
+"" Uses function PrintPdf
 command! -nargs=0 Pdf : call PrintPdf()
+
+"" Print current buffer to postscript file
+"" Uses function PrintPs
 command! -nargs=0 Ps : call PrintPs()
 
 
 ""===========================================================================
 "" FILE TYPES
 ""===========================================================================
+
+
+"" For diff
+if &diff
+    colorscheme github
+endif
 
 "" For vim-templates
 "" Do not use template by default. Load manually instead by, e.g., :Template *.tex
@@ -760,6 +808,7 @@ let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
 let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 
 "" Read PDF files in vim
+"" uses external program pdftotext
 autocmd BufReadPre *.pdf set ro
 autocmd BufReadPost *.pdf %!pdftotext -nopgbrk "%" -
 
@@ -772,18 +821,12 @@ else
     filetype on
 endif
 if has("autocmd")
-    " try to auto-examine filetype
     if v:version >= 600
         filetype plugin indent on
     endif
-    " try to restore last known cursor position
     autocmd BufReadPost * if line("'\"") | exe "normal '\"" | endif
-    " autoread gzip-files
     augroup gzip
-    " Remove all gzip autocommands
     au!
-    " Enable editing of gzipped files
-    " set binary mode before reading the file
     autocmd BufReadPre,FileReadPre      *.gz,*.bz2 set bin
     autocmd BufReadPost,FileReadPost    *.gz call GZIP_read("gunzip")
     autocmd BufReadPost,FileReadPost    *.bz2 call GZIP_read("bunzip2")
@@ -793,7 +836,6 @@ if has("autocmd")
     autocmd FileAppendPre               *.bz2 call GZIP_appre("bunzip2")
     autocmd FileAppendPost              *.gz call GZIP_write("gzip")
     autocmd FileAppendPost              *.bz2 call GZIP_write("bzip2")
-    " After reading compressed file: Uncompress text in buffer with "cmd"
     fun! GZIP_read(cmd)
         let ch_save = &ch
         set ch=2
@@ -802,12 +844,10 @@ if has("autocmd")
         let &ch = ch_save
         execute ":doautocmd BufReadPost " . expand("%:r")
     endfun
-    " After writing compressed file: Compress written file with "cmd"
     fun! GZIP_write(cmd)
         !mv <afile> <afile>:r
         execute "!" . a:cmd . " <afile>:r"
     endfun
-    " Before appending to compressed file: Uncompress file with "cmd"
     fun! GZIP_appre(cmd)
         execute "!" . a:cmd . " <afile>"
         !mv <afile>:r <afile>
@@ -815,7 +855,7 @@ if has("autocmd")
     augroup END " gzip
 endif
 
-"" Automatically update the 'Last modified:' date on write buffert.
+"" Automatically update the 'Last modified:' date on write buffert
 autocmd BufWritePre * call LastModified()
 
 
@@ -847,56 +887,59 @@ nmap <C-S> <Esc>:w<CR>
 vmap <C-S> <Esc>:w<CR>v
 imap <C-S> <Esc>:w<CR>i
 
-"" Map CTRL-d to insert time stamp.
-"" TODO: force English day names:
-"" LC_ALL=en_US date
-"" lan tim en_US.UTF-8
-"" LC_TIME=en_US.UTF-8 date
-:nnoremap <C-d> exe ':lan tim en_US.UTF-8'; "=strftime("%c")<CR>P
-:inoremap <C-d> <C-R>=strftime("%c")<CR>
+""" Map CTRL-d to insert time stamp
+nnoremap <C-d> :execute "normal! i" . InsertEnglishTimestamp()<CR>
+inoremap <C-d> <C-R>=InsertEnglishTimestamp()<CR>
 
 "" Search for occurence of selected text by pressing '/' in visual mode
 "" See function below for an alternative using forward and backward search
 vmap / y/<C-R>"<CR>
 
-"" A function to save word under cursor to a file
+"" Save word under cursor to a file
+"" Uses function SaveWord
 " map ,p :call SaveWord()
 
 "" Count letters in the word under the cursor
+"" Uses function LC
 map zz :call LC()<CR>
 
 "" Print the position in word under cursor
+"" Uses function PC
 "map zz:call PC()<CR>
 
 "" Count letters in the line under the cursor, v.2
+"" Uses function LC2
 map zx :call LC2()<CR>
 
 "" Count words in the line under the cursor, v.3
+"" Uses function LC3
 "map ZX :call LC3()<CR>
 
 "" Count A, C, G, and T's on a line
+"" Uses function Count_bases
 map ZZ :call Count_bases()<CR>
 
 "" C-Comment/uncomment function modified from vim.org/tips
+"" Uses function CComment
 map ö :call CComment()<CR>
 map ,/ :call CComment()<CR>
 
 "" Nexus-Comment/uncomment
+"" Uses function NexusComment
 map å :call NexusComment()<CR>
 map ,[ :call NexusComment()<CR>
 
 "" Perl-Comment/uncomment
+"" Uses function PerlComment
 map ä :call PerlComment()<CR>
 map ,. :call PerlComment()<CR>
 
 "" LaTeX-Comment/uncomment
+"" Uses function LaTeXComment
 "map ' :call LaTeXComment()<CR>
 
-"" VisualSearch
-"vnoremap <silent> * :call VisualSearch('f')<CR>
-"vnoremap <silent> # :call VisualSearch('b')<CR>
-
 "" Align columns based on white space
+"" Uses command Align
 vnoremap <silent> <Leader>a :Align<CR>
 
 "" Change case
@@ -904,75 +947,65 @@ vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 
 
 ""===========================================================================
-"" Add to Syntax Menu
+"" GUI MENUS
 ""===========================================================================
 
-"" Markown to PDF conversion using external wrappers to pandoc
-menu Syntax.-Sep-                      :
-menu Syntax.Markdown\ to\ &PDF         :!md2pdf % <CR><CR>
-menu Syntax.Markdown\ to\ &Beamer\ PDF :!md2beamer % <CR><CR>
+"" SYNTAX MENU
+"" Markdown to PDF conversion using external wrappers to pandoc
+menu Syntax.-Sep-                               :
+menu Syntax.Markdown.-Sep-                      :
+menu Syntax.Markdown.Markdown\ to\ &PDF         :! md2pdf % <CR><CR>
+menu Syntax.Markdown.Markdown\ to\ &Beamer\ PDF :! md2beamer % <CR><CR>
+menu Syntax.Retab.-Sep-                         :
+menu Syntax.Retab.Replace\ tabs\ with\ spaces   : norm gg=G''<CR>
 
-
-""===========================================================================
-"" PHYLO MENU (experimental)
-""===========================================================================
-
+"" PHYLO MENU (Note: uses a number of external software!)
 "" Run Alignment programs
-menu &Phylo.Do\ &Alignment.CLUSTALO.Protein\ or\ DNA :! clustalo --infile=% --outfile=ClUsTaLo.aln <CR>: tabe ClUsTaLo.aln<CR> : normal gg<CR>
-menu &Phylo.Do\ &Alignment.CLUSTALO.-Sep-            :
-menu &Phylo.Do\ &Alignment.CLUSTALO.Read\ CLUSTALO\ man\ page : call ReadMan('clustalo')<CR>
-menu &Phylo.Do\ &Alignment.CLUSTALW.Protein          :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/%/>/<CR>: normal gg<CR>
-menu &Phylo.Do\ &Alignment.CLUSTALW.DNA              :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/#/>/<CR>: normal gg<CR>
-menu &Phylo.Do\ &Alignment.CLUSTALW.-Sep-            :
-menu &Phylo.Do\ &Alignment.CLUSTALW.Read\ CLUSTALW\ man\ page : call ReadMan('clustalw')<CR>
-menu &Phylo.Do\ &Alignment.MUSCLE.Protein            :! muscle -in % -out mUsClE.aln<CR>: tabe mUsClE.aln<CR> :normal gg<CR>
-menu &Phylo.Do\ &Alignment.MUSCLE.-Sep-              :
-menu &Phylo.Do\ &Alignment.MUSCLE.Read\ MUSCLE\ man\ page : call ReadMan('muscle')<CR>
-menu &Phylo.Do\ &Alignment.MAFFT.mafft               :! mafft  % > MaFfT.mafft.ali<CR> : tabe  MaFfT.mafft.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.linsi               :! linsi  % > MaFfT.linsi.ali<CR> : tabe  MaFfT.linsi.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.ginsi               :! ginsi  % > MaFfT.ginsi.ali<CR> : tabe  MaFfT.ginsi.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.einsi               :! einsi  % > MaFfT.einsi.ali<CR> : tabe  MaFfT.einsi.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.fftnsi              :! fftnsi % > MaFfT.fftnsi.ali<CR>: tabe  MaFfT.fftnsi.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.fftns               :! fftns  % > MaFfT.fftns.ali<CR> : tabe  MaFfT.fftns.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.nwns                :! nwns   % > MaFfT.nwns.ali<CR>  : tabe  MaFfT.nwns.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.nwnsi               :! nwnsi  % > MaFfT.nwnsi.ali<CR> : tabe  MaFfT.nwnsi.ali<CR><CR>
-menu &Phylo.Do\ &Alignment.MAFFT.-Sep-               :
-menu &Phylo.Do\ &Alignment.MAFFT.Read\ MAFFT\ man\ page : call ReadMan('mafft')<CR>
+menu Phylo.Do\ Alignment.CLUSTALO.Protein\ or\ DNA          :! clustalo --infile=% --outfile=ClUsTaLo.aln <CR>: tabe ClUsTaLo.aln<CR> : normal gg<CR>
+menu Phylo.Do\ Alignment.CLUSTALO.-Sep-                     :
+menu Phylo.Do\ Alignment.CLUSTALO.Read\ CLUSTALO\ man\ page : call ReadMan('clustalo')<CR>
+menu Phylo.Do\ Alignment.CLUSTALW.Protein                   :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/%/>/<CR>: normal gg<CR>
+menu Phylo.Do\ Alignment.CLUSTALW.DNA                       :! clustalw -outorder=INPUT -output=GDE -case=UPPER -outfile=ClUsTaLw.aln -align -infile=%<CR>: tabe ClUsTaLw.aln<CR> :% s/#/>/<CR>: normal gg<CR>
+menu Phylo.Do\ Alignment.CLUSTALW.-Sep-                     :
+menu Phylo.Do\ Alignment.CLUSTALW.Read\ CLUSTALW\ man\ page : call ReadMan('clustalw')<CR>
+menu Phylo.Do\ Alignment.MUSCLE.Protein                     :! muscle3 -in % -out mUsClE.aln<CR>: tabe mUsClE.aln<CR> :normal gg<CR>
+menu Phylo.Do\ Alignment.MUSCLE.-Sep-                       :
+menu Phylo.Do\ Alignment.MUSCLE.Read\ MUSCLE\ man\ page     : call ReadMan('muscle3')<CR>
+menu Phylo.Do\ Alignment.MAFFT.mafft\ --auto                :! mafft --auto % > MaFfT.mafft.auto.ali<CR> : tabe  MaFfT.mafft.auto.ali<CR><CR>
+menu Phylo.Do\ Alignment.MAFFT.-Sep-                        :
+menu Phylo.Do\ Alignment.MAFFT.Read\ MAFFT\ man\ page       : call ReadMan('mafft')<CR>
 
 "" Edit alignments
-"menu Phylo.Edit.-Sep-	:
-menu &Phylo.&Utilities.Get\ FASTA\ info                      : ! get_fasta_info %<CR>
-menu &Phylo.&Utilities.Remove\ all\ gaps\ in\ FASTA          : call DegapFasta()<CR>
-menu &Phylo.&Utilities.Align\ taxlabels\ (in\ phyml\ format) : Align<CR>
-menu &Phylo.&Utilities.Count\ sequences\ (in\ FASTA\ format) : call GetNtax2()<CR>
-menu &Phylo.&Utilities.Set\ filetype\ to\ DNA                : set ft=align<CR>
-menu &Phylo.&Utilities.Set\ filetype\ to\ AA                 : set ft=aalign<CR>
-menu &Phylo.&Utilities.Set\ filetype\ to\ Nexus              : set ft=nexus<CR>
-menu &Phylo.&Utilities.Display\ Newick\ as\ ASCII            : ! nw_display -S  % > AsCiI.tRe<CR> : tabe AsCiI.tRe<CR><CR>
+menu Phylo.Utilities.Get\ FASTA\ info                       :! get_fasta_info %<CR>
+menu Phylo.Utilities.Remove\ all\ gaps\ in\ FASTA           : call DegapFasta()<CR>
+menu Phylo.Utilities.Align\ taxlabels\ (in\ phyml\ format)  : Align<CR>
+menu Phylo.Utilities.Count\ sequences\ (in\ FASTA\ format)  : call GetNtax2()<CR>
+menu Phylo.Utilities.Set\ filetype\ to\ DNA                 : set ft=align<CR>
+menu Phylo.Utilities.Set\ filetype\ to\ AA                  : set ft=aalign<CR>
+menu Phylo.Utilities.Set\ filetype\ to\ Nexus               : set ft=nexus<CR>
+menu Phylo.Utilities.Display\ Newick\ as\ ASCII             :! nw_display -S  % > AsCiI.tRe<CR> : tabe AsCiI.tRe<CR><CR>
 
 "" Format conversions
-menu &Phylo.&Convert.Phyml\ to\ FASTA : Phyml2Fasta<CR>
-menu &Phylo.&Convert.FASTA\ to\ Phyml : call Fasta2Phyml()<CR><CR>
-menu &Phylo.&Convert.FASTA\ to\ Nexus : Fas2Nex<CR> : set ft=nexus<CR>
-menu &Phylo.&Convert.FASTA\ to\ Tab   : Fasta2Tab<CR>
-menu &Phylo.&Convert.Tab\ to\ FASTA   : Tab2Fasta<CR>
-menu &Phylo.&Convert.Unwrap\ FASTA    : call Fasta2NonInterLeavedFasta()<CR><CR>
-menu &Phylo.&Convert.Wrap\ FASTA      : WrapFasta<CR>
+menu Phylo.Convert.Phyml\ to\ FASTA                         : Phyml2Fasta<CR>
+menu Phylo.Convert.FASTA\ to\ Phyml                         : call Fasta2Phyml()<CR><CR>
+menu Phylo.Convert.FASTA\ to\ Nexus                         : Fas2Nex<CR> : set ft=nexus<CR>
+menu Phylo.Convert.FASTA\ to\ Tab                           : Fasta2Tab<CR>
+menu Phylo.Convert.Tab\ to\ FASTA                           : Tab2Fasta<CR>
+menu Phylo.Convert.Unwrap\ FASTA                            : call Fasta2NonInterLeavedFasta()<CR><CR>
+menu Phylo.Convert.Wrap\ FASTA                              : WrapFasta<CR>
 
 "" DNA
-menu &Phylo.&DNA.RevComp                  : RC<CR>
-menu &Phylo.&DNA.Insert\ Random\ DNA\ Seq : Randseq
+menu Phylo.DNA.RevComp                                      : RC<CR>
+menu Phylo.DNA.Insert\ Random\ DNA\ Seq                     : Randseq
 
 "" Run programs
-"" need to capture the output from fasttree in a new buffer instead of having
-"" to hardcode the output name
-menu &Phylo.&Run.&Fasttree\ (DNA)          : ! fasttree -nt % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
-menu &Phylo.&Run.Fasttree\ (AA)            : ! fasttree  % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
-menu &Phylo.&Run.&PAUP                     : ! paup %<CR>
-menu &Phylo.&Run.&MrBayes                  : ! mb -i %<CR>
-"menu &Phylo.Phylo.Run\ Phyml :
-menu &Phylo.&Run.MrAIC\ (24\ nt\ models)   : ! mraic.pl %<CR><CR>: tabe *.MrAIC.txt<CR>
-menu &Phylo.&Run.MrAIC\ (56\ nt\ models)   : ! mraic.pl -modeltest %<CR><CR>: tabe *.MrAIC.txt<CR>
-menu &Phylo.&Run.pMr&AIC\ (24\ nt\ models) : ! pmraic.pl --noverbose %<CR><CR>: tabe *.pMrAIC.txt<CR>
-menu &Phylo.&Run.pMrAIC\ (56\ nt\ models)  : ! pmraic.pl --noverbose --modeltest %<CR><CR>: tabe *.pMrAIC.txt<CR>
+"" Need to capture the output from fasttree in a new buffer instead of having to hardcode the output name
+menu Phylo.Run.Fasttree\ (DNA)                              :! fasttree -nt % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
+menu Phylo.Run.Fasttree\ (AA)                               :! fasttree  % > FaSt.tre<CR><CR>: tabe FaSt.tre<CR>
+menu Phylo.Run.PAUP                                         :! paup %<CR>
+menu Phylo.Run.MrBayes                                      :! mb -i %<CR>
+menu Phylo.Run.MrAIC\ (24\ nt\ models)                      :! mraic.pl %<CR><CR>: tabe *.MrAIC.txt<CR>
+menu Phylo.Run.MrAIC\ (56\ nt\ models)                      :! mraic.pl -modeltest %<CR><CR>: tabe *.MrAIC.txt<CR>
+menu Phylo.Run.pMr&AIC\ (24\ nt\ models)                    :! pmraic.pl --noverbose %<CR><CR>: tabe *.pMrAIC.txt<CR>
+menu Phylo.Run.pMrAIC\ (56\ nt\ models)                     :! pmraic.pl --noverbose --modeltest %<CR><CR>: tabe *.pMrAIC.txt<CR>
 
