@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor okt 30, 2025  02:50
+"" Last modified: tor okt 30, 2025  06:16
 ""
 "" Sign: Johan Nylander
 ""
@@ -99,7 +99,6 @@ set tabstop=4                                                 " Tab is 4 spaces
 set expandtab                                                 " Replace tabs with spaces,
 set autoindent                                                " Reuse indent on current line
 set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:× " Display indentation guides
-autocmd FileType make setlocal noexpandtab                    "   but not if editing a Makefile
 set matchpairs+=<:>                                           " Add <> as match pairs (default "(:),{:},[:]")
 set nocompatible                                              " For vimwiki
 set ruler                                                     " Show the line and column number of the cursor position.
@@ -227,16 +226,6 @@ function! DegapFasta()
     exe ':normal gg'
 endfunction
 
-"function! Fasta2NonInterLeavedFasta()
-"    " Convert interleaved FASTA to non-interleaved FASTA
-"    " WARNING: does not work well on large (long sequences) files!
-"    exe ':g/^>/s/\(^>.*\)/\1@/'
-"    exe ':%s/\n//'
-"    exe ':s/@/\r/g'
-"    exe ':g!/^>/s/>/\r>/g'
-"    echo ''
-"endfunction
-
 function! Fasta2NonInterLeavedFasta()
     "" Convert interleaved FASTA to non-interleaved FASTA
     exe ':%g/^>/s/\(^>.*\)/\1@/'
@@ -245,13 +234,6 @@ function! Fasta2NonInterLeavedFasta()
     exe ':%g!/^>/s/ //g'
     echo ''
 endfunction
-
-"function! GetNchar()
-"    " Count the sequence length from FASTA file
-"    let nchar=0
-"    ...
-"    return nchar
-"endfunction
 
 function! GetMaxLineLength()
     "" Count the length of longest line in file (not counting white space)
@@ -381,13 +363,6 @@ function! Dice(qty,sides)
     return sum
 endfunction
 
-"function! RandSeq(len)
-"    "" Insert random sequence using external Perl-script
-"    let LENGTH = a:len
-"    exe ':r!/home/nylander/bin/getrandomsequence.pl' . ' ' . LENGTH
-"endfunction
-"command! -nargs=1 Randseq : call RandSeq(<args>)
-
 function MySketch()
     "" Call ToggleSketch while disabling the autofolding
     "set foldenable!
@@ -477,22 +452,88 @@ function! RC_Tim(l1, l2)
     let &l:ic = l:ignorecs
 endfunction
 
-function! ShowSeqPos()
-    "" Show seq position. Assumes this format: Seqlabel ACGT
-    let mycolumn = col(".")
-    let [lnum, seqstart] = searchpos('\s', 'bcn')
-    let seqpos = mycolumn - seqstart
-    if seqpos < 1
-        let seqpos = ''
+"function! ShowSeqPos()
+"    "" Show seq position. Assumes this format: Seqlabel ACGT
+"    let mycolumn = col(".")
+"    let [lnum, seqstart] = searchpos('\s', 'bcn')
+"    let seqpos = mycolumn - seqstart
+"    if seqpos < 1
+"        let seqpos = ''
+"    endif
+"    return seqpos
+"endfunction
+"
+"function! ShowSeqLabel()
+"    "" Show sequence label. Beta 01/17/2013 09:45:18 PM
+"    let seqlabel = substitute(getline("."), '\s*\(\S\+\)\s\+.*', '\1', '')
+"    return seqlabel
+"endfunction
+
+function! ShowSeqLabelInFasta()
+    " Fasta header parser
+    let lnum = search('^>', 'bcnW')
+    if lnum == 0
+        return ''
     endif
-    return seqpos
+    let header = getline(lnum)
+    return substitute(header, '^>\s*', '', '')
 endfunction
 
-function! ShowSeqLabel()
-    "" Show sequence label. Beta 01/17/2013 09:45:18 PM
+function! ShowSeqPosInFasta()
+    " Compute cumulative sequence position in fasta (1-based, ignoring spaces)
+    let myline = line('.')
+    let mycol  = col('.')
+    let line_text = getline(myline)
+    if line_text =~ '^>'
+        return '-'
+    endif
+    let start_line = search('^>', 'bcnW')
+    if start_line == 0
+        return ''
+    endif
+    let next_header = search('^>', 'nW')
+    if next_header == 0
+        let end_line = line('$')
+    else
+        let end_line = next_header - 1
+    endif
+    let seqpos = 0
+    for l in range(start_line + 1, myline - 1)
+        let seqpos += strlen(substitute(getline(l), '\s', '', 'g'))
+    endfor
+    let current_segment = strpart(line_text, 0, mycol)
+    let seqpos += strlen(substitute(current_segment, '\s', '', 'g'))
+    return seqpos
+endfunction
+" Testing:
+"set statusline=%f\ Seq\ pos:\ %{ShowSeqPosInFasta()}\ [%{ShowSeqLabelInFasta()}]%=[%l,%c]
+"set laststatus=2
+
+function! ShowSeqLabelInPhylip()
+    " phylip label parser (will also include the first row)
     let seqlabel = substitute(getline("."), '\s*\(\S\+\)\s\+.*', '\1', '')
     return seqlabel
 endfunction
+
+function! ShowSeqPosInPhylip()
+    " Compute cumulative sequence position in phylip format (1-based, ignoring spaces)
+    let mycolumn = col(".")
+    let line = getline(".")
+    let seqstart = match(line, '\s\zs\S') "'\s\zs[\w?-]'
+    if seqstart == -1
+        return '-'
+    endif
+    if mycolumn <= seqstart
+        return '-'
+    endif
+    let segment = strpart(line, seqstart, mycolumn - seqstart)
+    let segment_clean = substitute(segment, '\s', '', 'g')
+    let seqpos = strlen(segment_clean)
+    return seqpos
+endfunction
+" Testing
+"set statusline=%f\ Seq\ pos:\ %{ShowSeqPosInPyhylip()}\ [%{ShowSeqLabelInPhylip()}]%=[%l,%c]
+"set laststatus=2
 
 function! CComment()
     "" C-Comment/uncomment function modified from vim.org/tips
@@ -773,7 +814,7 @@ command! -nargs=0 Ps : call PrintPs()
 ""===========================================================================
 
 
-"" For diff
+"" Use other color scheme for diff
 if &diff
     colorscheme github
 endif
@@ -808,9 +849,31 @@ let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
 let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 
 "" Read PDF files in vim
-"" uses external program pdftotext
+"" Uses external program pdftotext
 autocmd BufReadPre *.pdf set ro
 autocmd BufReadPost *.pdf %!pdftotext -nopgbrk "%" -
+
+"" FASTA files
+autocmd BufRead,BufNewFile *.fas,*.fasta,*.fna,*.faa setfiletype fasta
+augroup fasta_statusline
+    autocmd!
+    autocmd FileType fasta call SetFastaStatusline()
+augroup END
+function! SetFastaStatusline()
+    setlocal statusline=%f\ Seq\ pos:\ %{ShowSeqPosInFasta()}\ [%{ShowSeqLabelInFasta()}]%=[%l,%c]
+    setlocal laststatus=2
+endfunction
+
+"" PHYLIP files
+autocmd BufRead,BufNewFile *.dat,*.phy setfiletype phylip
+augroup phylip_statusline
+    autocmd!
+    autocmd FileType phylip call SetPhylipStatusline()
+augroup END
+function! SetPhylipStatusline()
+    setlocal statusline=%f\ Seq\ pos:\ %{ShowSeqPosInPhylip()}\ [%{ShowSeqLabelInPhylip()}]%=[%l,%c]
+    setlocal laststatus=2
+endfunction
 
 "" Allow editing of compressed files
 "" http://www.ashberg.de/vim/vimrc.html
@@ -876,7 +939,10 @@ map M :%s//\r/g
 " map _u :s/^# //<CR>
 
 "" Map F4 to TagList on/off
-nnoremap <silent> <F4> :TlistToggle \| sp <CR>
+"nnoremap <silent> <F4> :TlistToggle \| sp <CR>
+"set <F4>=<C-v><F4>
+"nnoremap <F4> :TlistToggle \| sp <CR>
+nnoremap <F4> :TlistToggle<enter>
 
 "" Map the F12 key to Sketch on/off
 "map <F12> :call ToggleSketch()<CR>
