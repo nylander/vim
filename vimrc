@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: tor okt 30, 2025  06:16
+"" Last modified: 2025-10-31 11:17:24
 ""
 "" Sign: Johan Nylander
 ""
@@ -63,25 +63,23 @@
 "" and commands in this file calls external software. Both home made(!) and
 "" avalilable from, e.g. debian/ubuntu apt sources.
 "" Current list with sources:
-""  - clustalo: sudo apt install clustalo
-""  - clustalw: sudo apt install clustalw
-""  - fasttree: sudo apt install fasttree
-""  - mafft: sudo apt install mafft
-""  - man: sudo apt install man-db
-""  - mb: sudo apt install mrbayes
-""  - muscle3: sudo apt install muscle3
-""  - pdftotext: sudo apt install poppler-utils
-""  - ps2pdf: sudo apt install ghostscript
-""
+""  - clustalo:         sudo apt install clustalo
+""  - clustalw:         sudo apt install clustalw
+""  - fasttree:         sudo apt install fasttree
+""  - mafft:            sudo apt install mafft
+""  - man:              sudo apt install man-db
+""  - mb:               sudo apt install mrbayes
+""  - muscle3:          sudo apt install muscle3
+""  - pdftotext:        sudo apt install poppler-utils
+""  - ps2pdf:           sudo apt install ghostscript
 ""  - fas2nex.stdinout: https://gist.github.com/nylander/3e197cb3c683419965b84d327a5217d1
-""  - get_fasta_info: https://github.com/nylander/get_fasta_info
-""  - md2beamer: https://github.com/nylander/md2pdf
-""  - md2pdf: https://github.com/nylander/md2pdf
-""  - mraic.pl: https://github.com/nylander/mraic
-""  - nw_display: https://github.com/tjunier/newick_utils
-""  - paup: https://phylosolutions.com/paup-test
-""  - pmraic.pl: https://github.com/nylander/pmraic
-""
+""  - get_fasta_info:   https://github.com/nylander/get_fasta_info
+""  - md2beamer:        https://github.com/nylander/md2pdf
+""  - md2pdf:           https://github.com/nylander/md2pdf
+""  - mraic.pl:         https://github.com/nylander/mraic
+""  - nw_display:       https://github.com/tjunier/newick_utils
+""  - paup:             https://phylosolutions.com/paup-test
+""  - pmraic.pl:        https://github.com/nylander/pmraic
 
 
 ""===========================================================================
@@ -90,24 +88,25 @@
 
 filetype plugin indent on                                     " Enable plugins for filetype
 syntax on                                                     " Enable syntax
-"set textwidth=100                                            " Maximum width of text that is being inserted (line will be broken).
-set wrap!                                                     " Do not soft wrap buffer.
-set nu                                                        " Note: no numbers ('set nu!') when teaching.
+"set textwidth=100                                            " Maximum width of text that is being inserted (line will be broken)
+set wrap!                                                     " Do not soft wrap buffer
+set nu                                                        " Note: no numbers ('set nu!') when teaching
 set shiftwidth=4                                              " Indent 4 spaces
 set shiftround                                                " Round indent to multiple of 'shiftwidth'
 set tabstop=4                                                 " Tab is 4 spaces
 set expandtab                                                 " Replace tabs with spaces,
+autocmd FileType make setlocal noexpandtab                    "   but not if editing a Makefile
 set autoindent                                                " Reuse indent on current line
 set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:× " Display indentation guides
 set matchpairs+=<:>                                           " Add <> as match pairs (default "(:),{:},[:]")
 set nocompatible                                              " For vimwiki
-set ruler                                                     " Show the line and column number of the cursor position.
-set backspace=indent,eol,start                                " Backspace behavior.
-set foldmethod=indent                                         " Enable folding on indentation. Use zo, zc, zM, zR to open/close.
-set foldminlines=0                                            " Fold also single lines.
-set foldenable!                                               " Fold by default.
+set ruler                                                     " Show the line and column number of the cursor position
+set backspace=indent,eol,start                                " Backspace behavior
+set foldmethod=indent                                         " Enable folding on indentation: Use zo, zc, zM, zR to open/close
+set foldminlines=0                                            " Fold also single lines
+set foldenable!                                               " Fold by default
 "set viminfo='10,\"100,:20,%,n~/.viminfo
-"set cursorline cursorcolumn                                  " Highlight current line/column
+"set cursorline cursorcolumn                                  " Highlight current line+column
 let &t_SI = "\<Esc>[6 q"                                      " Cursor settings, t_SI insert, t_EI normal, t_SR replace
 let &t_SR = "\<Esc>[4 q"                                      " 1 = blinking block,        2 = steady block
 let &t_EI = "\<Esc>[2 q"                                      " 3 = blinking underline,    4 = steady underline
@@ -116,41 +115,22 @@ let &t_EI = "\<Esc>[2 q"                                      " 3 = blinking und
 let g:copilot_enabled = v:false                               " Disable copilot by default. Enable by :Copilot enable
 let g:instant_markdown_autostart = 0                          " Disable instant_markdown by default
 
-"" Manipulate status line to show seq position.
-"" TODO: This is work in progress.
-"set statusline=[%l,%c].\ Seqpos:%{ShowSeqPos()}
-"set statusline+=\ Seqpos:%{ShowSeqPos()}%=[%l,%c]
-"set statusline+=\Seq\ pos:\ %{ShowSeqPos()}\ [%{ShowSeqLabel()}]%=[%l,%c]
-"set laststatus=2
-
 
 ""===========================================================================
 "" GUI SETTINGS
 ""===========================================================================
 
-set guifont=DejaVu\ Sans\ Mono\ 9                  " On desktop.
-"set guifont=DejaVu\ Sans\ Mono\ 20                 " For teaching.
-"set guifont=Monospace\ 20                          " For teaching.
-"set guifont=Monospace\ 11                          " On awesome laptop.
+set guifont=DejaVu\ Sans\ Mono\ 9                  " On desktop
+"set guifont=Monospace\ 11                         " On laptop
+"set guifont=Monospace\ 22                         " For teaching
 
-set guioptions+=b                                   " GUI bottom scrollbar
-set guioptions-=T                                   " No toolbar in GUI
+set guioptions+=b                                  " GUI bottom scrollbar
+set guioptions-=T                                  " No toolbar in GUI
 
 "" Set default size for GUI window
 if has("gui_running")
-    "" GUI is running or is about to start.
-    "" Maximize gvim window.
     set lines=40 columns=140
-else
-    "" This is console Vim.
-    if exists("+lines")
-        set lines=30
-    endif
-    if exists("+columns")
-        set columns=100
-    endif
 endif
-
 
 ""===========================================================================
 "" FUNCTIONS
@@ -174,12 +154,11 @@ function! LastModified()
     """ If buffer modified, update any 'Last modified: ' in the first 20 lines.
     """ 'Last modified: ' can have up to 10 characters before (they are retained).
     """ Restores cursor and window position using save_cursor variable.
-    """ TODO: Use my InsertEnglishTimestamp() function
     if &modified
         let save_cursor = getpos(".")
         let n = min([20, line("$")])
         keepjumps exe '1,' . n . 's#^\(.\{,10}Last modified: \).*#\1' .
-          \ strftime('%a %b %d, %Y  %I:%M%p') . '#e'
+          \ strftime('%Y-%m-%d %T') . '#e'
         call histdel('search', -1)
         call setpos('.', save_cursor)
     endif
@@ -452,24 +431,7 @@ function! RC_Tim(l1, l2)
     let &l:ic = l:ignorecs
 endfunction
 
-"function! ShowSeqPos()
-"    "" Show seq position. Assumes this format: Seqlabel ACGT
-"    let mycolumn = col(".")
-"    let [lnum, seqstart] = searchpos('\s', 'bcn')
-"    let seqpos = mycolumn - seqstart
-"    if seqpos < 1
-"        let seqpos = ''
-"    endif
-"    return seqpos
-"endfunction
-"
-"function! ShowSeqLabel()
-"    "" Show sequence label. Beta 01/17/2013 09:45:18 PM
-"    let seqlabel = substitute(getline("."), '\s*\(\S\+\)\s\+.*', '\1', '')
-"    return seqlabel
-"endfunction
-
-function! ShowSeqLabelInFasta()
+function! ShowSeqLabelInFasta() abort
     " Fasta header parser
     let lnum = search('^>', 'bcnW')
     if lnum == 0
@@ -479,7 +441,7 @@ function! ShowSeqLabelInFasta()
     return substitute(header, '^>\s*', '', '')
 endfunction
 
-function! ShowSeqPosInFasta()
+function! ShowSeqPosInFasta() abort
     " Compute cumulative sequence position in fasta (1-based, ignoring spaces)
     let myline = line('.')
     let mycol  = col('.')
@@ -509,13 +471,13 @@ endfunction
 "set statusline=%f\ Seq\ pos:\ %{ShowSeqPosInFasta()}\ [%{ShowSeqLabelInFasta()}]%=[%l,%c]
 "set laststatus=2
 
-function! ShowSeqLabelInPhylip()
-    " phylip label parser (will also include the first row)
+function! ShowSeqLabelInPhylip() abort
+    " phylip label parser (will also include the first row with dimensions)
     let seqlabel = substitute(getline("."), '\s*\(\S\+\)\s\+.*', '\1', '')
     return seqlabel
 endfunction
 
-function! ShowSeqPosInPhylip()
+function! ShowSeqPosInPhylip() abort
     " Compute cumulative sequence position in phylip format (1-based, ignoring spaces)
     let mycolumn = col(".")
     let line = getline(".")
@@ -721,7 +683,7 @@ endfunction
 "    endif
 "endfunction
 
-function! Gettt()
+function! Gettt() abort
     "" Yank word under cursor and put into a Perl-debug print statement
     let l:wordUnderCursor = expand("<cWORD>")
     let s:apa = substitute(l:wordUnderCursor, '[\$\%\@]', "", "g")
@@ -729,7 +691,13 @@ function! Gettt()
     exe "normal o" l:cmd "\<Esc>"
 endfunction
 
-function! InsertEnglishTimestamp() abort
+function! GetTimeStamp() abort
+    " Get timestamp. See :help strftime for format options
+    let l:ts = strftime("%Y-%m-%d %T")
+    return l:ts
+endfunction
+
+function! GetUSTimeStamp() abort
     " Get timestamp while temporarily changing LC_TIME to en_US.UTF-8
     let l:langinfo = execute('language')
     let l:old = ''
@@ -745,6 +713,18 @@ function! InsertEnglishTimestamp() abort
         silent! language time
     endif
     return l:ts
+endfunction
+
+function! Teaching() abort
+    " Resize and modify look for teaching.
+    " TODO: make sure we play with awesome-wm to center window
+    se nu!
+    syntax off
+    set cursorline cursorcolumn
+    if has("gui_running")
+        set lines=18 columns=80
+        set guifont=Monospace\ 24
+    endif
 endfunction
 
 
@@ -813,7 +793,6 @@ command! -nargs=0 Ps : call PrintPs()
 "" FILE TYPES
 ""===========================================================================
 
-
 "" Use other color scheme for diff
 if &diff
     colorscheme github
@@ -865,6 +844,7 @@ function! SetFastaStatusline()
 endfunction
 
 "" PHYLIP files
+" TODO: CSV plugin will see *.dat as csv. Need to handle this.
 autocmd BufRead,BufNewFile *.dat,*.phy setfiletype phylip
 augroup phylip_statusline
     autocmd!
@@ -918,6 +898,10 @@ if has("autocmd")
     augroup END " gzip
 endif
 
+"" Set mark in Perl
+iab gett warn "\n HERE (hit return to continue)\n" and getc();
+iab gettt print Dumper();warn "\n  (hit return to continue)\n" and getc();
+
 "" Automatically update the 'Last modified:' date on write buffert
 autocmd BufWritePre * call LastModified()
 
@@ -926,10 +910,21 @@ autocmd BufWritePre * call LastModified()
 "" MAPPINGS
 ""===========================================================================
 
-"" Set mark in Perl
-iab gett warn "\n HERE (hit return to continue)\n" and getc();
-iab gettt print Dumper();warn "\n  (hit return to continue)\n" and getc();
+" Problems mapping F-keys. Have to use 'Fn + F<n>' on my system!
+" https://vimhelp.org/vim_faq.txt.html#faq-20.1
+
+"" Map F2 to Set mark in Perl
 map <F2> :call Gettt()<CR>
+
+"" Map F4 to TagList on/off
+nnoremap <silent> <F4> :TlistToggle \| sp <CR>
+
+"" Map the F12 key to Sketch on/off
+"map <F12> :call MySketch()<CR>
+map <F12> :call ToggleSketch() <CR>
+
+"" Map F3 to set teaching mode
+map <F3> : call Teaching() <CR>
 
 "" Map M to get rid of ^M's
 map M :%s//\r/g
@@ -938,24 +933,14 @@ map M :%s//\r/g
 " map _c :s/^/# /<CR>
 " map _u :s/^# //<CR>
 
-"" Map F4 to TagList on/off
-"nnoremap <silent> <F4> :TlistToggle \| sp <CR>
-"set <F4>=<C-v><F4>
-"nnoremap <F4> :TlistToggle \| sp <CR>
-nnoremap <F4> :TlistToggle<enter>
-
-"" Map the F12 key to Sketch on/off
-"map <F12> :call ToggleSketch()<CR>
-map <F12> :call MySketch()<CR>
-
 "" Map CTRL-s to SAVE in normal, visual, and insert mode
 nmap <C-S> <Esc>:w<CR>
 vmap <C-S> <Esc>:w<CR>v
 imap <C-S> <Esc>:w<CR>i
 
 """ Map CTRL-d to insert time stamp
-nnoremap <C-d> :execute "normal! i" . InsertEnglishTimestamp()<CR>
-inoremap <C-d> <C-R>=InsertEnglishTimestamp()<CR>
+nnoremap <C-d> :execute "normal! i" . GetTimeStamp()<CR>
+inoremap <C-d> <C-R>=GetTimeStamp()<CR>
 
 "" Search for occurence of selected text by pressing '/' in visual mode
 "" See function below for an alternative using forward and backward search
@@ -1018,12 +1003,12 @@ vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 
 "" SYNTAX MENU
 "" Markdown to PDF conversion using external wrappers to pandoc
-menu Syntax.-Sep-                               :
-menu Syntax.Markdown.-Sep-                      :
-menu Syntax.Markdown.Markdown\ to\ &PDF         :! md2pdf % <CR><CR>
-menu Syntax.Markdown.Markdown\ to\ &Beamer\ PDF :! md2beamer % <CR><CR>
-menu Syntax.Retab.-Sep-                         :
-menu Syntax.Retab.Replace\ tabs\ with\ spaces   : norm gg=G''<CR>
+menu Syntax.-Sep-                                           :
+menu Syntax.Markdown.-Sep-                                  :
+menu Syntax.Markdown.Markdown\ to\ &PDF                     :! md2pdf % <CR><CR>
+menu Syntax.Markdown.Markdown\ to\ &Beamer\ PDF             :! md2beamer % <CR><CR>
+menu Syntax.Retab.-Sep-                                     :
+menu Syntax.Retab.Replace\ tabs\ with\ spaces               : norm gg=G''<CR>
 
 "" PHYLO MENU (Note: uses a number of external software!)
 "" Run Alignment programs

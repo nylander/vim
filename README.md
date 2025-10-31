@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: tor okt 30, 2025  03:02
+- Last modified: 2025-10-31 11:16:05
 - Sign: Johan Nylander
 
 ---
@@ -50,6 +50,8 @@ section](#replicating-the-repository-on-a-new-machine) below.
 ### File `vimrc`
 
 `~/.vimrc` is a symbolic link to `~/.vim/vimrc`.
+
+There are also a lot of *comments* in the .vimrc worth reading.
 
 ### Additions and plugins/submodules
 
@@ -132,6 +134,10 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 5. See the file [vimrc](vimrc) for *additional programs* required for full
    functionality. This involves both installing using package managers or
    manually installing from the internet (github.com etc).
+
+6. Specific changes (work in progress)
+    - [ ] Need to automatic filetype recognignition made by the CSV plugin (remove `*.dat`, add `*.tsv`)
+    - [ ] ...
 
 ### Links
 
