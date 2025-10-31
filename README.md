@@ -1,6 +1,6 @@
 # My .vim folder
 
-- Last modified: 2025-10-31 11:16:05
+- Last modified: 2025-10-31 11:27:56
 - Sign: Johan Nylander
 
 ---
@@ -51,7 +51,7 @@ section](#replicating-the-repository-on-a-new-machine) below.
 
 `~/.vimrc` is a symbolic link to `~/.vim/vimrc`.
 
-There are also a lot of *comments* in the .vimrc worth reading.
+There are also a lot of *comments* in the [vimrc](vimrc) worth reading.
 
 ### Additions and plugins/submodules
 
@@ -61,7 +61,7 @@ There are also a lot of *comments* in the .vimrc worth reading.
    For example:
 
        $ git clone https://github.com/vim-scripts/taglist.vim.git \
-                  ~/.vim/pack/plugins/start/taglist.vim
+           ~/.vim/pack/plugins/start/taglist.vim
 
 2. Open `vim` and execute
 
@@ -133,10 +133,11 @@ directly to `$HOME/.vim`, and link/copy the `.vim/vimrc` to `$HOME/.vimrc`.
 
 5. See the file [vimrc](vimrc) for *additional programs* required for full
    functionality. This involves both installing using package managers or
-   manually installing from the internet (github.com etc).
+   manually installing from the internet (github).
 
 6. Specific changes (work in progress)
-    - [ ] Need to automatic filetype recognignition made by the CSV plugin (remove `*.dat`, add `*.tsv`)
+    - [ ] Need to override automatic filetype recognignition made by the CSV plugin (remove `*.dat`, add `*.tsv`)
+    - [ ] Make sure I use my own [templates](myfiles/templates/)
     - [ ] ...
 
 ### Links
