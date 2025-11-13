@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: 2025-10-31 11:17:24
+"" Last modified: 2025-11-13 14:46:35
 ""
 "" Sign: Johan Nylander
 ""
@@ -1004,6 +1004,7 @@ vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 "" SYNTAX MENU
 "" Markdown to PDF conversion using external wrappers to pandoc
 menu Syntax.-Sep-                                           :
+menu Syntax.Teaching\ mode                                  : call Teaching()<CR>
 menu Syntax.Markdown.-Sep-                                  :
 menu Syntax.Markdown.Markdown\ to\ &PDF                     :! md2pdf % <CR><CR>
 menu Syntax.Markdown.Markdown\ to\ &Beamer\ PDF             :! md2beamer % <CR><CR>
