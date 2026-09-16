@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: 2025-11-13 14:48:12
+"" Last modified: 2026-09-16 12:46:49
 ""
 "" Sign: Johan Nylander
 ""
@@ -715,16 +715,83 @@ function! GetUSTimeStamp() abort
     return l:ts
 endfunction
 
-function! Teaching() abort
-    " Resize and modify look for teaching.
-    " TODO: make sure we play with awesome-wm to center window
-    se nu!
-    syntax off
-    set cursorline cursorcolumn
-    if has("gui_running")
-        set lines=18 columns=80
-        set guifont=Monospace\ 24
+function! s:ParseFields(line, delim) abort
+  "" Parse visually selected structured text (comma or white space)
+  "" Helper function for TableizeRange
+  let s = trim(a:line)
+  let out = []
+  let field = ''
+  let quote = ''
+  let i = 0
+  let n = strchars(s)
+  while i < n
+    let ch = strcharpart(s, i, 1)
+    if !empty(quote)
+      let field .= ch
+      if ch ==# '\'
+        let i += 1
+        if i < n
+          let field .= strcharpart(s, i, 1)
+        endif
+      elseif ch ==# quote
+        let quote = ''
+      endif
+    elseif ch ==# '"' || ch ==# "'"
+      let quote = ch
+      let field .= ch
+    elseif a:delim ==# ',' && ch ==# ','
+      call add(out, trim(field))
+      let field = ''
+    elseif a:delim ==# ' ' && ch =~# '\s'
+      if !empty(field)
+        call add(out, field)
+        let field = ''
+      endif
+      while i + 1 < n && strcharpart(s, i + 1, 1) =~# '\s'
+        let i += 1
+      endwhile
+    else
+      let field .= ch
     endif
+    let i += 1
+  endwhile
+  call add(out, trim(field))
+  return out
+endfunction
+
+function! s:TableizeRange() range abort
+  "" Create markdown table from visually selected lines
+  "" Uses function ParseFields
+  let src = getline(a:firstline, a:lastline)
+  let delim = ''
+  for line in src
+    let line = trim(line)
+    if !empty(line)
+      let delim = stridx(line, ',') >= 0 ? ',' : ' '
+      break
+    endif
+  endfor
+  if empty(delim)
+    return
+  endif
+  let rows = []
+  for line in src
+    let line = trim(line)
+    if !empty(line)
+      call add(rows, s:ParseFields(line, delim))
+    endif
+  endfor
+  if empty(rows)
+    return
+  endif
+  let out = []
+  call add(out, '| ' . join(rows[0], ' | ') . ' |')
+  call add(out, '| ' . join(repeat(['---'], len(rows[0])), ' | ') . ' |')
+  for row in rows[1:]
+    call add(out, '| ' . join(row, ' | ') . ' |')
+  endfor
+  execute a:firstline . ',' . a:lastline . 'delete _'
+  call append(a:firstline - 1, out)
 endfunction
 
 
@@ -787,6 +854,10 @@ command! -nargs=0 Pdf : call PrintPdf()
 "" Print current buffer to postscript file
 "" Uses function PrintPs
 command! -nargs=0 Ps : call PrintPs()
+
+"" Structured lines to markdown table
+"" Uses functions ParseFields and TableizeRange
+command! -range Tableize <line1>,<line2>call <SID>TableizeRange()
 
 
 ""===========================================================================
@@ -995,6 +1066,10 @@ vnoremap <silent> <Leader>a :Align<CR>
 
 "" Change case
 vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
+
+"" lines to markdown table
+"" Used function Tableize
+xnoremap <silent> <Leader>, :Tableize<CR>
 
 
 ""===========================================================================
