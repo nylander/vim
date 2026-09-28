@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: 2026-09-16 12:46:49
+"" Last modified: 2026-09-28 09:55:34
 ""
 "" Sign: Johan Nylander
 ""
@@ -893,6 +893,10 @@ autocmd BufRead *.lyx syntax sync fromstart
 autocmd FileType perl set makeprg=perl\ -cW\ %\ $*
 autocmd FileType perl set errorformat=%f:%l:%m
 autocmd FileType perl set autowrite
+
+"" Check Python syntax with :make
+"" Uses external program flake8
+autocmd FileType python set makeprg=flake8\ --max-line-length\ 150\ %\ $*
 
 "" For Taglist
 let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
