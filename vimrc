@@ -1,6 +1,6 @@
 "" File: vimrc
 ""
-"" Last modified: 2026-09-28 09:55:34
+"" Last modified: 2026-10-08 15:16:01
 ""
 "" Sign: Johan Nylander
 ""
@@ -131,6 +131,7 @@ set guioptions-=T                                  " No toolbar in GUI
 if has("gui_running")
     set lines=40 columns=140
 endif
+
 
 ""===========================================================================
 "" FUNCTIONS
@@ -716,82 +717,213 @@ function! GetUSTimeStamp() abort
 endfunction
 
 function! s:ParseFields(line, delim) abort
-  "" Parse visually selected structured text (comma or white space)
-  "" Helper function for TableizeRange
-  let s = trim(a:line)
-  let out = []
-  let field = ''
-  let quote = ''
-  let i = 0
-  let n = strchars(s)
-  while i < n
-    let ch = strcharpart(s, i, 1)
-    if !empty(quote)
-      let field .= ch
-      if ch ==# '\'
-        let i += 1
-        if i < n
-          let field .= strcharpart(s, i, 1)
+    "" Parse visually selected structured text (comma or white space)
+    "" Helper function for TableizeRange
+    let s = trim(a:line)
+    let out = []
+    let field = ''
+    let quote = ''
+    let i = 0
+    let n = strchars(s)
+    while i < n
+        let ch = strcharpart(s, i, 1)
+        if !empty(quote)
+            let field .= ch
+            if ch ==# '\'
+                let i += 1
+                if i < n
+                    let field .= strcharpart(s, i, 1)
+                endif
+            elseif ch ==# quote
+                let quote = ''
+            endif
+        elseif ch ==# '"' || ch ==# "'"
+            let quote = ch
+            let field .= ch
+        elseif a:delim ==# ',' && ch ==# ','
+            call add(out, trim(field))
+            let field = ''
+        elseif a:delim ==# ' ' && ch =~# '\s'
+            if !empty(field)
+                call add(out, field)
+                let field = ''
+            endif
+            while i + 1 < n && strcharpart(s, i + 1, 1) =~# '\s'
+                let i += 1
+            endwhile
+        else
+            let field .= ch
         endif
-      elseif ch ==# quote
-        let quote = ''
-      endif
-    elseif ch ==# '"' || ch ==# "'"
-      let quote = ch
-      let field .= ch
-    elseif a:delim ==# ',' && ch ==# ','
-      call add(out, trim(field))
-      let field = ''
-    elseif a:delim ==# ' ' && ch =~# '\s'
-      if !empty(field)
-        call add(out, field)
-        let field = ''
-      endif
-      while i + 1 < n && strcharpart(s, i + 1, 1) =~# '\s'
         let i += 1
-      endwhile
-    else
-      let field .= ch
-    endif
-    let i += 1
-  endwhile
-  call add(out, trim(field))
-  return out
+    endwhile
+    call add(out, trim(field))
+    return out
 endfunction
 
 function! s:TableizeRange() range abort
-  "" Create markdown table from visually selected lines
-  "" Uses function ParseFields
-  let src = getline(a:firstline, a:lastline)
-  let delim = ''
-  for line in src
-    let line = trim(line)
-    if !empty(line)
-      let delim = stridx(line, ',') >= 0 ? ',' : ' '
-      break
+    "" Create markdown table from visually selected lines
+    "" Uses function ParseFields
+    let src = getline(a:firstline, a:lastline)
+    let delim = ''
+    for line in src
+        let line = trim(line)
+        if !empty(line)
+            let delim = stridx(line, ',') >= 0 ? ',' : ' '
+            break
+        endif
+    endfor
+    if empty(delim)
+        return
     endif
-  endfor
-  if empty(delim)
-    return
-  endif
-  let rows = []
-  for line in src
-    let line = trim(line)
-    if !empty(line)
-      call add(rows, s:ParseFields(line, delim))
+    let rows = []
+    for line in src
+        let line = trim(line)
+        if !empty(line)
+            call add(rows, s:ParseFields(line, delim))
+        endif
+    endfor
+    if empty(rows)
+        return
     endif
-  endfor
-  if empty(rows)
-    return
-  endif
-  let out = []
-  call add(out, '| ' . join(rows[0], ' | ') . ' |')
-  call add(out, '| ' . join(repeat(['---'], len(rows[0])), ' | ') . ' |')
-  for row in rows[1:]
-    call add(out, '| ' . join(row, ' | ') . ' |')
-  endfor
-  execute a:firstline . ',' . a:lastline . 'delete _'
-  call append(a:firstline - 1, out)
+    let out = []
+    call add(out, '| ' . join(rows[0], ' | ') . ' |')
+    call add(out, '| ' . join(repeat(['---'], len(rows[0])), ' | ') . ' |')
+    for row in rows[1:]
+        call add(out, '| ' . join(row, ' | ') . ' |')
+    endfor
+    execute a:firstline . ',' . a:lastline . 'delete _'
+    call append(a:firstline - 1, out)
+endfunction
+
+function! s:ExpandIUPAC(symbol) abort
+    "" Expand an IUPAC symbol into the bases it represents.
+    "" for DiffSummary
+    let l:iupac = {
+        \ 'A': ['A'],
+        \ 'C': ['C'],
+        \ 'G': ['G'],
+        \ 'T': ['T'],
+        \ 'R': ['A', 'G'],
+        \ 'Y': ['C', 'T'],
+        \ 'S': ['G', 'C'],
+        \ 'W': ['A', 'T'],
+        \ 'K': ['G', 'T'],
+        \ 'M': ['A', 'C'],
+        \ 'B': ['C', 'G', 'T'],
+        \ 'D': ['A', 'G', 'T'],
+        \ 'H': ['A', 'C', 'T'],
+        \ 'V': ['A', 'C', 'G'],
+        \ 'N': ['A', 'C', 'G', 'T'],
+        \ }
+    return get(l:iupac, a:symbol, [])
+endfunction
+
+function! s:IUPACSummary(symbols) abort
+    "" Convert a column containing IUPAC symbols into its summary symbol.
+    "" For DiffSummary
+    if empty(a:symbols)
+        return ' '
+    endif
+    let l:has_gap = 0
+    let l:bases = []
+    for l:symbol in a:symbols
+        if l:symbol ==# '-'
+            let l:has_gap = 1
+            continue
+        endif
+        let l:expanded = s:ExpandIUPAC(l:symbol)
+        if empty(l:expanded)
+            return '?'
+        endif
+        for l:base in l:expanded
+            if index(l:bases, l:base) < 0
+                call add(l:bases, l:base)
+            endif
+        endfor
+    endfor
+    " A mixture of gaps and bases cannot be represented by an IUPAC
+    " nucleotide ambiguity code. Return question mark.
+    if l:has_gap && !empty(l:bases)
+        return '?'
+    endif
+    if l:has_gap
+        return '-'
+    endif
+    let l:bases = sort(l:bases)
+    let l:key = join(l:bases, '')
+    let l:iupac = {
+        \ 'A':    'A',
+        \ 'C':    'C',
+        \ 'G':    'G',
+        \ 'T':    'T',
+        \ 'AC':   'M',
+        \ 'AG':   'R',
+        \ 'AT':   'W',
+        \ 'CG':   'S',
+        \ 'CT':   'Y',
+        \ 'GT':   'K',
+        \ 'ACG':  'V',
+        \ 'ACT':  'H',
+        \ 'AGT':  'D',
+        \ 'CGT':  'B',
+        \ 'ACGT': 'N',
+        \ }
+    return get(l:iupac, l:key, '?')
+endfunction
+
+function! DiffSummary(mode) abort
+    "" Visual selection column-difference summary
+    "" Mode caret indicates columns with differing letters
+    "" Mode iupac creates a iupac consensus (DNA) sequence given the letters
+    "" in the column.
+    "" Usage:
+    ""   :DiffSummary caret
+    ""   :DiffSummary iupac
+    if a:mode !=# 'caret' && a:mode !=# 'iupac'
+        echoerr 'DiffSummary: mode must be "caret" or "iupac"'
+        return
+    endif
+    let l:start = getpos("'<")
+    let l:end   = getpos("'>")
+    let l:start_lnum = min([l:start[1], l:end[1]])
+    let l:end_lnum   = max([l:start[1], l:end[1]])
+    let l:start_col  = min([l:start[2], l:end[2]])
+    let l:end_col    = max([l:start[2], l:end[2]])
+    let l:width = l:end_col - l:start_col + 1
+    let l:summary = ''
+    for l:offset in range(0, l:width - 1)
+        let l:col = l:start_col + l:offset
+        let l:symbols = []
+        for l:lnum in range(l:start_lnum, l:end_lnum)
+            let l:line = getline(l:lnum)
+            if l:col <= strlen(l:line)
+                let l:symbol = strpart(l:line, l:col - 1, 1)
+                let l:symbol = toupper(l:symbol)
+                if l:symbol !=# ''
+                    call add(l:symbols, l:symbol)
+                endif
+            endif
+        endfor
+        if a:mode ==# 'caret'
+            let l:unique = uniq(sort(copy(l:symbols)))
+            if len(l:unique) > 1
+                let l:summary .= '^'
+            else
+                let l:summary .= ' '
+            endif
+        else
+            let l:summary .= s:IUPACSummary(l:symbols)
+        endif
+    endfor
+    let l:indent = repeat(' ', l:start_col - 1)
+    let l:summary = l:indent . l:summary
+    call append(l:end_lnum, l:summary)
+    echo 'Difference summary added'
+endfunction
+
+function! DiffSummaryComplete(ArgLead, CmdLine, CursorPos) abort
+    " For DiffSummary
+    return ['caret', 'iupac']
 endfunction
 
 
@@ -825,7 +957,9 @@ command Mac  :set ff=mac
 "command! -nargs=0 Fasta2NonInterLeavedFasta :normal gg | :s/>/\r>/<CR> | :%s/\(^>.\+\)$/\1<skojj/<CR> | :%s/\n//g<CR> | :%s/>/\r>/g<CR> | :%s/<skojj/\r/<CR> | :normal ggdd<CR>
 command! -nargs=0 UnWrapFasta : call Fasta2NonInterLeavedFasta()
 
-"" Convert sequential PHYML file format to sequential FASTA file format. 2014/04/27 (JN): Will not work as is if no blank lines. Will also not work without the first g/^$/d if blank lines...
+"" Convert sequential PHYML file format to sequential FASTA file format.
+"" 2014/04/27 (JN): Will not work as is if no blank lines.
+"" Will also not work without the first g/^$/d if blank lines...
 command! -nargs=0 Phyml2Fasta : g/^$/d<CR> | :normal ggdd | :%s/^/>/<CR>< | :%s/\s\+/\r/<CR><CR>
 
 "" Convert FASTA (interleaved) file format to  PHYML (sequential) file format
@@ -858,6 +992,12 @@ command! -nargs=0 Ps : call PrintPs()
 "" Structured lines to markdown table
 "" Uses functions ParseFields and TableizeRange
 command! -range Tableize <line1>,<line2>call <SID>TableizeRange()
+
+"" Highlight or make consensus from column differences in visually selected
+"" text
+"" Uses DiffSummary
+command! -range -nargs=1 -complete=customlist,DiffSummaryComplete
+      \ DiffSummary call DiffSummary(<q-args>)
 
 
 ""===========================================================================
@@ -1072,8 +1212,13 @@ vnoremap <silent> <Leader>a :Align<CR>
 vnoremap ~ ygv"=TwiddleCase(@")<CR>Pgv
 
 "" lines to markdown table
-"" Used function Tableize
+"" Uses function Tableize
 xnoremap <silent> <Leader>, :Tableize<CR>
+
+"" Summarize columns
+"" Uses DiffSummary
+xnoremap <Leader>dc :<C-U>DiffSummary caret<CR>
+xnoremap <Leader>di :<C-U>DiffSummary iupac<CR>
 
 
 ""===========================================================================
